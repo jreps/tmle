@@ -5,9 +5,9 @@ tmleNews <- function(...){
 
 #-------------summary.tmle------------------
 # create tmle summary object
-# return values of psi, variance, epsilon, 
+# return values of psi, variance, epsilon,
 # and info on estimation of Q and g factors, if available
-#---------------------------------------	 
+#---------------------------------------
 summary.tmle <- function(object,...) {
   if(inherits(object, "tmle")){
 		Qmodel <- Qcoef <- gmodel <- gcoef <- g.Deltamodel <- g.Deltacoef <- NULL
@@ -15,7 +15,7 @@ summary.tmle <- function(object,...) {
 		Qterms <- gterms <- g.Deltaterms <- g.Zterms <- ""
 		if(!is.null(object$Qinit)){
 		  if (!is.null(object$Qinit$coef)){
-			Qcoef <- object$Qinit$coef	
+			Qcoef <- object$Qinit$coef
 			if(inherits(Qcoef, "matrix")){
 				Qterms <- colnames(Qcoef)
 			} else {
@@ -24,7 +24,7 @@ summary.tmle <- function(object,...) {
 			Qmodel <- paste("Y ~ 1")
 			if(length(Qterms) > 1) {
 				Qmodel <- paste("Y ~ ", paste(Qterms, collapse =" + "))
-			} 
+			}
 		  } else {
 		  	Qmodel <- object$Qinit$type
 		  }
@@ -38,11 +38,11 @@ summary.tmle <- function(object,...) {
 				gterms <- colnames(gcoef)
 			} else {
 				gterms <- names(gcoef)
-			}			
+			}
 			gmodel <- paste("A ~ 1")
 			if(length(gterms) > 1) {
 				gmodel <- paste("A ~ ", paste(gterms, collapse =" + "))
-			} 
+			}
 		}}
 		if(!is.null(object$g.Z)){
 		if (!is.null(object$g.Z$coef)) {
@@ -51,11 +51,11 @@ summary.tmle <- function(object,...) {
 				g.Zterms <- colnames(g.Zcoef)
 			} else {
 				g.Zterms <- names(g.Zcoef)
-			}			
+			}
 			g.Zmodel <- paste("Z ~ 1")
 			if(length(g.Zterms) > 1) {
 				g.Zmodel <- paste("Z ~", paste(g.Zterms, collapse =" + "))
-			} 
+			}
 		}}
 		if(!is.null(object$g.Delta)){
 		if (!is.null(object$g.Delta$coef)) {
@@ -64,15 +64,15 @@ summary.tmle <- function(object,...) {
 				g.Deltaterms <- colnames(g.Deltacoef)
 			} else {
 				g.Deltaterms <- names(g.Deltacoef)
-			}			
+			}
 			g.Deltamodel <- paste("Delta ~ 1")
 			if(length(g.Deltaterms) > 1) {
 				g.Deltamodel <- paste("Delta ~", paste(g.Deltaterms, collapse =" + "))
-			} 
+			}
 		}}
 		summary.tmle <- list(estimates=object$estimates,
 						Qmodel=Qmodel, Qterms=Qterms, Qcoef=Qcoef, Qtype=object$Qinit$type, QRsq=object$Qinit$Rsq,
-						QRsq.type = object$Qinit$Rsq.type, 
+						QRsq.type = object$Qinit$Rsq.type,
 						gbd=gbd, gbd.ATT = gbd.ATT, gmodel=gmodel, gterms=gterms, gcoef=gcoef,gtype=object$g$type, gdiscreteSL= object$g$discreteSL, gAUC = object$g$AUC,
 						g.Zmodel=g.Zmodel, g.Zterms=g.Zterms, g.Zcoef=g.Zcoef, g.Ztype=object$g.Z$type, g.ZdiscreteSL= object$g.Z$discreteSL,
 						g.Deltamodel=g.Deltamodel, g.Deltaterms=g.Deltaterms, g.Deltacoef=g.Deltacoef, g.Deltatype=object$g.Delta$type,
@@ -107,18 +107,18 @@ print.summary.tmle <- function(x,...) {
   	cat("\n Estimation of g (treatment mechanism)\n")
   	cat("\t Procedure:", x$gtype)
   	if(!(is.null(x$gdiscreteSL))) {
-  		 if (x$gdiscreteSL) { 
+  		 if (x$gdiscreteSL) {
   		 	cat(", discrete")
   		 } else {
   		 	cat(", ensemble")
   		 }
   	}
   	if(!(is.null(x$gAUC))){
-  		cat("\t Empirical AUC =", round(x$gAUC, 4), "\n") 
+  		cat("\t Empirical AUC =", round(x$gAUC, 4), "\n")
   	}
   	cat("\n")
-  		
-  	if(!(is.na(x$gcoef[1]))){	
+
+  	if(!(is.na(x$gcoef[1]))){
  		cat("\t Model:\n\t\t", x$gmodel, "\n")
   		cat("\n\t Coefficients: \n")
   		terms <- sprintf("%15s", x$gterms)
@@ -128,8 +128,8 @@ print.summary.tmle <- function(x,...) {
   	}}
   	cat("\n Estimation of g.Z (intermediate variable assignment mechanism)\n")
   	cat("\t Procedure:", x$g.Ztype, "\n")
-  	
-  	if(!(is.na(x$g.Zcoef[1]))){		
+
+  	if(!(is.na(x$g.Zcoef[1]))){
   		cat("\t Model:\n\t\t",x$g.Zmodel, "\n")
   		cat("\n\t Coefficients: \n")
   		terms <- sprintf("%15s", x$g.Zterms)
@@ -140,15 +140,15 @@ print.summary.tmle <- function(x,...) {
   	cat("\n Estimation of g.Delta (missingness mechanism)\n")
   	cat("\t Procedure:", x$g.Deltatype)
   	if(!(is.null(x$g.DeltadiscreteSL))) {
-  		 if (x$g.DeltadiscreteSL) { 
+  		 if (x$g.DeltadiscreteSL) {
   		 	cat(", discrete")
   		 } else {
   		 	cat(", ensemble")
   		 }
   	}
   	cat("\n")
-  	
-  	if(!(is.na(x$g.Deltacoef[1]))){		
+
+  	if(!(is.na(x$g.Deltacoef[1]))){
   		cat("\t Model:\n\t\t",x$g.Deltamodel, "\n")
   		cat("\n\t Coefficients: \n")
   		terms <- sprintf("%15s", x$g.Deltaterms)
@@ -160,13 +160,13 @@ print.summary.tmle <- function(x,...) {
   	if(!is.null(x$gbd.ATT)){
   		cat("\n Bounds on g for ATT/ATC:", paste0("(", round(min(x$gbd.ATT),4), ", ", round(max(x$gbd.ATT),4),")"), "\n")
   	}
-  	if(is.null(x$estimates$alpha.sig)){  
+  	if(is.null(x$estimates$alpha.sig)){
   		sig.level <- "95" # backwards compatability
   	}
   	else {
   		sig.level <- round(max(100-x$estimates$alpha.sig*100, x$estimates$alpha.sig*100),1)
   	}
-  	
+
   	if(!is.null(x$estimates$EY1)){
 		if (is.null(x$estimates$EY0)){  # NOT A TYPO!
 			cat("\n\n Population Mean")
@@ -176,34 +176,34 @@ print.summary.tmle <- function(x,...) {
 		cat("\n   Parameter Estimate: ", signif(x$estimates$EY1$psi,5))
 		cat("\n   Estimated Variance: ", signif(x$estimates$EY1$var.psi,5))
 		cat("\n              p-value: ", ifelse(x$estimates$EY1$pvalue <= 2*10^-16, "<2e-16",signif(x$estimates$EY1$pvalue,5)))
-		cat("\n   ",paste0(sig.level,"% Conf Interval: "),paste("(", signif(x$estimates$EY1$CI[1],5), ", ", signif(x$estimates$EY1$CI[2],5), ")", sep="")) 
+		cat("\n   ",paste0(sig.level,"% Conf Interval: "),paste("(", signif(x$estimates$EY1$CI[1],5), ", ", signif(x$estimates$EY1$CI[2],5), ")", sep=""))
 		if(!is.na(x$estimates$EY1$bs.var)){
 		  cat("\n   Quantile-based CIs and boostrap variance")
-		  cat("\n     bs ",sig.level,"% 2-sided Conf Interval:",paste("(", signif(x$estimates$EY1$bs.CI.twosided[1],5), ", ", signif(x$estimates$EY1$bs.CI.twosided[2],5), ")", sep=""))  
-		  cat("\n     bs ",sig.level,"%   lower  Conf Interval:",paste("(", signif(x$estimates$EY1$bs.CI.onesided.lower[1],5), ", ", signif(x$estimates$EY1$bs.CI.onesided.lower[2],5), ")", sep=""))	
-		  cat("\n     bs ",sig.level,"%   upper Conf Interval:",paste("(", signif(x$estimates$EY1$bs.CI.onesided.upper[1],5), ", ", signif(x$estimates$EY1$bs.CI.onesided.upper[2],5), ")", sep="")) 
-		  	cat("\n     bs Variance:", signif(x$estimates$EY1$bs.var, 5))			
+		  cat("\n     bs ",sig.level,"% 2-sided Conf Interval:",paste("(", signif(x$estimates$EY1$bs.CI.twosided[1],5), ", ", signif(x$estimates$EY1$bs.CI.twosided[2],5), ")", sep=""))
+		  cat("\n     bs ",sig.level,"%   lower  Conf Interval:",paste("(", signif(x$estimates$EY1$bs.CI.onesided.lower[1],5), ", ", signif(x$estimates$EY1$bs.CI.onesided.lower[2],5), ")", sep=""))
+		  cat("\n     bs ",sig.level,"%   upper Conf Interval:",paste("(", signif(x$estimates$EY1$bs.CI.onesided.upper[1],5), ", ", signif(x$estimates$EY1$bs.CI.onesided.upper[2],5), ")", sep=""))
+		  	cat("\n     bs Variance:", signif(x$estimates$EY1$bs.var, 5))
 		}
 		cat("\n")
 		}
-	
+
 		if(!is.null(x$estimates$EY0)){
 		cat("\n Marginal Mean under Comparator (EY0)")
 		cat("\n   Parameter Estimate: ", signif(x$estimates$EY0$psi,5))
 		cat("\n   Estimated Variance: ", signif(x$estimates$EY0$var.psi,5))
 		cat("\n              p-value: ", ifelse(x$estimates$EY0$pvalue <= 2*10^-16, "<2e-16",signif(x$estimates$EY0$pvalue,5)))
-		cat("\n   ",paste0(sig.level,"% Conf Interval: "),paste("(", signif(x$estimates$EY0$CI[1],5), ", ", signif(x$estimates$EY0$CI[2],5), ")", sep="")) 
+		cat("\n   ",paste0(sig.level,"% Conf Interval: "),paste("(", signif(x$estimates$EY0$CI[1],5), ", ", signif(x$estimates$EY0$CI[2],5), ")", sep=""))
 		if(!is.na(x$estimates$EY0$bs.var)){
 		  cat("\n   Quantile-based CIs and boostrap variance")
-		  cat("\n     bs ",sig.level,"% 2-sided Conf Interval:",paste("(", signif(x$estimates$EY0$bs.CI.twosided[1],5), ", ", signif(x$estimates$EY0$bs.CI.twosided[2],5), ")", sep=""))  
-		  cat("\n     bs ",sig.level,"%   lower  Conf Interval:",paste("(", signif(x$estimates$EY0$bs.CI.onesided.lower[1],5), ", ", signif(x$estimates$EY0$bs.CI.onesided.lower[2],5), ")", sep=""))	
-		  cat("\n     bs ",sig.level,"%   upper Conf Interval:",paste("(", signif(x$estimates$EY0$bs.CI.onesided.upper[1],5), ", ", signif(x$estimates$EY0$bs.CI.onesided.upper[2],5), ")", sep="")) 
-		  	cat("\n     bs Variance:", signif(x$estimates$EY0$bs.var, 5))			
+		  cat("\n     bs ",sig.level,"% 2-sided Conf Interval:",paste("(", signif(x$estimates$EY0$bs.CI.twosided[1],5), ", ", signif(x$estimates$EY0$bs.CI.twosided[2],5), ")", sep=""))
+		  cat("\n     bs ",sig.level,"%   lower  Conf Interval:",paste("(", signif(x$estimates$EY0$bs.CI.onesided.lower[1],5), ", ", signif(x$estimates$EY0$bs.CI.onesided.lower[2],5), ")", sep=""))
+		  cat("\n     bs ",sig.level,"%   upper Conf Interval:",paste("(", signif(x$estimates$EY0$bs.CI.onesided.upper[1],5), ", ", signif(x$estimates$EY0$bs.CI.onesided.upper[2],5), ")", sep=""))
+		  	cat("\n     bs Variance:", signif(x$estimates$EY0$bs.var, 5))
 		}
 		cat("\n")
 	}
 
-	
+
 
 	if(!is.null(x$estimates$ATE)){
 			cat("\n Additive Effect")
@@ -213,12 +213,12 @@ print.summary.tmle <- function(x,...) {
 			cat("\n   ",paste0(sig.level,"%"),"Conf Interval: ",paste("(", signif(x$estimates$ATE$CI[1],5), ", ", signif(x$estimates$ATE$CI[2],5), ")", sep=""))
 			if(!is.na(x$estimates$ATE$bs.var)){
 			  cat("\n   Quantile-based CIs and boostrap variance")
-			  cat("\n     bs",paste0(sig.level,"%"),"2-sided Conf Interval:",paste("(", signif(x$estimates$ATE$bs.CI.twosided[1],5), ", ", signif(x$estimates$ATE$bs.CI.twosided[2],5), ")", sep="")) 			 
+			  cat("\n     bs",paste0(sig.level,"%"),"2-sided Conf Interval:",paste("(", signif(x$estimates$ATE$bs.CI.twosided[1],5), ", ", signif(x$estimates$ATE$bs.CI.twosided[2],5), ")", sep=""))
 			  cat("\n     bs",paste0(sig.level,"%"),"  lower Conf Interval:",paste("(", signif(x$estimates$ATE$bs.CI.onesided.lower[1],5), ", ", signif(x$estimates$ATE$bs.CI.onesided.lower[2],5), ")", sep=""))
 			  cat("\n     bs",paste0(sig.level,"%"),"  upper Conf Interval:",paste("(", signif(x$estimates$ATE$bs.CI.onesided.upper[1],5), ", ", signif(x$estimates$ATE$bs.CI.onesided.upper[2],5), ")", sep=""))
-			  cat("\n     bs Variance:", signif(x$estimates$ATE$bs.var, 5))		
+			  cat("\n     bs Variance:", signif(x$estimates$ATE$bs.var, 5))
 			}
-			cat("\n") 
+			cat("\n")
 		}
 		if(!is.null(x$estimates$ATT)){
 			cat("\n Additive Effect among the Treated")
@@ -231,12 +231,12 @@ print.summary.tmle <- function(x,...) {
 			cat("\n   ",paste0(sig.level,"%"),"Conf Interval: ",paste("(", signif(x$estimates$ATT$CI[1],5), ", ", signif(x$estimates$ATT$CI[2],5), ")", sep=""))
 			if(!is.na(x$estimates$ATT$bs.var)){
 			  cat("\n   Quantile-based CIs and boostrap variance")
-			  cat("\n     bs",paste0(sig.level,"%"),"2-sided Conf Interval:",paste("(", signif(x$estimates$ATT$bs.CI.twosided[1],5), ", ", signif(x$estimates$ATT$bs.CI.twosided[2],5), ")", sep="")) 
+			  cat("\n     bs",paste0(sig.level,"%"),"2-sided Conf Interval:",paste("(", signif(x$estimates$ATT$bs.CI.twosided[1],5), ", ", signif(x$estimates$ATT$bs.CI.twosided[2],5), ")", sep=""))
 			  cat("\n     bs",paste0(sig.level,"%"),"  lower Conf Interval:",paste("(", signif(x$estimates$ATT$bs.CI.onesided.lower[1],5), ", ", signif(x$estimates$ATT$bs.CI.onesided.lower[2],5), ")", sep=""))
 			  cat("\n     bs",paste0(sig.level,"%"), "  upper Conf Interval:",paste("(", signif(x$estimates$ATT$bs.CI.onesided.upper[1],5), ", ", signif(x$estimates$ATT$bs.CI.onesided.upper[2],5), ")", sep=""))
-			  cat("\n     bs Variance:", signif(x$estimates$ATT$bs.var, 5))  				
+			  cat("\n     bs Variance:", signif(x$estimates$ATT$bs.var, 5))
 			}
-			cat("\n") 
+			cat("\n")
 		}
 		if(!is.null(x$estimates$ATC)){
 			if(!x$estimates$ATC$converged) {
@@ -249,27 +249,27 @@ print.summary.tmle <- function(x,...) {
 			cat("\n   ",paste0(sig.level,"%"),"Conf Interval: ",paste("(", signif(x$estimates$ATC$CI[1],5), ", ", signif(x$estimates$ATC$CI[2],5), ")", sep=""))
 			if(!is.na(x$estimates$ATC$bs.var)){
 			  cat("\n   Quantile-based CIs and boostrap variance")
-			  cat("\n     bs",paste0(sig.level,"%"),"2-sided Conf Interval:",paste("(", signif(x$estimates$ATC$bs.CI.twosided[1],5), ", ", signif(x$estimates$ATC$bs.CI.twosided[2],5), ")", sep="")) 
-			   cat("\n     bs",paste0(sig.level,"%"),"  lower Conf Interval:",paste("(", signif(x$estimates$ATC$bs.CI.onesided.lower[1],5), ", ", signif(x$estimates$ATC$bs.CI.onesided.lower[2],5), ")", sep=""))	
+			  cat("\n     bs",paste0(sig.level,"%"),"2-sided Conf Interval:",paste("(", signif(x$estimates$ATC$bs.CI.twosided[1],5), ", ", signif(x$estimates$ATC$bs.CI.twosided[2],5), ")", sep=""))
+			   cat("\n     bs",paste0(sig.level,"%"),"  lower Conf Interval:",paste("(", signif(x$estimates$ATC$bs.CI.onesided.lower[1],5), ", ", signif(x$estimates$ATC$bs.CI.onesided.lower[2],5), ")", sep=""))
 			  cat("\n     bs",paste0(sig.level,"%"),"  upper Conf Interval:",paste("(", signif(x$estimates$ATC$bs.CI.onesided.upper[1],5), ", ", signif(x$estimates$ATC$bs.CI.onesided.upper[2],5), ")", sep=""))
-			  cat("\n     bs Variance:", signif(x$estimates$ATC$bs.var, 5))  			
+			  cat("\n     bs Variance:", signif(x$estimates$ATC$bs.var, 5))
 			}
-			cat("\n")  
+			cat("\n")
 		}
 		if(!is.null(x$estimates$RR)){
 			cat("\n Relative Risk")
 			cat("\n   Parameter  Estimate: ", signif(x$estimates$RR$psi,5))
 			cat("\n   Variance(log scale): ", signif(x$estimates$RR$var.log.psi,5))
 			cat("\n               p-value: ", ifelse(x$estimates$RR$pvalue <= 2*10^-16, "<2e-16",signif(x$estimates$RR$pvalue,5)))
-			cat("\n    ",paste0(sig.level,"%"),"Conf Interval: ",paste("(", signif(x$estimates$RR$CI[1],5), ", ", signif(x$estimates$RR$CI[2],5), ")", sep="")) 
+			cat("\n    ",paste0(sig.level,"%"),"Conf Interval: ",paste("(", signif(x$estimates$RR$CI[1],5), ", ", signif(x$estimates$RR$CI[2],5), ")", sep=""))
 			if(!is.na(x$estimates$RR$bs.var.log.psi)){
 			  cat("\n   Quantile-based CIs and boostrap variance")
-			  cat("\n     bs",paste0(sig.level,"%"), "2-sided Conf Interval (RR):",paste("(", signif(x$estimates$RR$bs.CI.twosided[1],5), ", ", signif(x$estimates$RR$bs.CI.twosided[2],5), ")", sep="")) 
-			  cat("\n     bs",paste0(sig.level,"%"),"  lower Conf Interval:",paste("(", signif(x$estimates$RR$bs.CI.onesided.lower[1],5), ", ", signif(x$estimates$RR$bs.CI.onesided.lower[2],5), ")", sep=""))	
+			  cat("\n     bs",paste0(sig.level,"%"), "2-sided Conf Interval (RR):",paste("(", signif(x$estimates$RR$bs.CI.twosided[1],5), ", ", signif(x$estimates$RR$bs.CI.twosided[2],5), ")", sep=""))
+			  cat("\n     bs",paste0(sig.level,"%"),"  lower Conf Interval:",paste("(", signif(x$estimates$RR$bs.CI.onesided.lower[1],5), ", ", signif(x$estimates$RR$bs.CI.onesided.lower[2],5), ")", sep=""))
 			  cat("\n     bs",paste0(sig.level,"%"),"  upper Conf Interval:",paste("(", signif(x$estimates$RR$bs.CI.onesided.upper[1],5), ", ", signif(x$estimates$RR$bs.CI.onesided.upper[2],5), ")", sep=""))
 			  cat("\n     bs Variance (log scale):", signif(x$estimates$RR$bs.var.log.psi, 5))
 			}
-			cat("\n") 
+			cat("\n")
 
 		}
 		if(!is.null(x$estimates$OR)){
@@ -277,17 +277,17 @@ print.summary.tmle <- function(x,...) {
 			cat("\n    Parameter  Estimate: ", signif(x$estimates$OR$psi,5))
 			cat("\n    Variance(log scale): ", signif(x$estimates$OR$var.log.psi,5))
 			cat("\n                p-value: ", ifelse(x$estimates$OR$pvalue <= 2*10^-16, "<2e-16",signif(x$estimates$OR$pvalue,5)))
-			cat("\n     ",paste0(sig.level,"%"),"Conf Interval: ",paste("(", signif(x$estimates$OR$CI[1],5), ", ", signif(x$estimates$OR$CI[2],5), ")", sep="")) 
+			cat("\n     ",paste0(sig.level,"%"),"Conf Interval: ",paste("(", signif(x$estimates$OR$CI[1],5), ", ", signif(x$estimates$OR$CI[2],5), ")", sep=""))
 			if(!is.na(x$estimates$OR$bs.var.log.psi)){
 			  cat("\n   Quantile-based CIs and boostrap variance")
-			  cat("\n     bs",paste0(sig.level,"%"),"2-sided Conf Interval (OR):",paste("(", signif(x$estimates$OR$bs.CI.twosided[1],5), ", ", signif(x$estimates$OR$bs.CI.twosided[2],5), ")", sep="")) 
-			   cat("\n     bs",paste0(sig.level,"%"),"  lower Conf Interval:",paste("(", signif(x$estimates$OR$bs.CI.onesided.lower[1],5), ", ", signif(x$estimates$OR$bs.CI.onesided.lower[2],5), ")", sep=""))	
-			   cat("\n     bs",paste0(sig.level,"%"),"  upper Conf Interval:",paste("(", signif(x$estimates$OR$bs.CI.onesided.upper[1],5), ", ", signif(x$estimates$OR$bs.CI.onesided.upper[2],5), ")", sep="")) 
-			   cat("\n     bs Variance (log scale):", signif(x$estimates$OR$bs.var.log.psi, 5)) 
+			  cat("\n     bs",paste0(sig.level,"%"),"2-sided Conf Interval (OR):",paste("(", signif(x$estimates$OR$bs.CI.twosided[1],5), ", ", signif(x$estimates$OR$bs.CI.twosided[2],5), ")", sep=""))
+			   cat("\n     bs",paste0(sig.level,"%"),"  lower Conf Interval:",paste("(", signif(x$estimates$OR$bs.CI.onesided.lower[1],5), ", ", signif(x$estimates$OR$bs.CI.onesided.lower[2],5), ")", sep=""))
+			   cat("\n     bs",paste0(sig.level,"%"),"  upper Conf Interval:",paste("(", signif(x$estimates$OR$bs.CI.onesided.upper[1],5), ", ", signif(x$estimates$OR$bs.CI.onesided.upper[2],5), ")", sep=""))
+			   cat("\n     bs Variance (log scale):", signif(x$estimates$OR$bs.var.log.psi, 5))
 			}
-			cat("\n") 
+			cat("\n")
 		}
- 
+
   } else {
   	 stop("Error calling print.summary.tmle. 'x' needs to have class 'summary.tmle'\n")
   }
@@ -298,13 +298,13 @@ print.summary.tmle <- function(x,...) {
 #-----------------------------------------
 print.tmle <- function(x,...) {
 	if(inherits(x, "tmle")){
-		if(is.null(x$estimates$alpha.sig)){  
+		if(is.null(x$estimates$alpha.sig)){
   			sig.level <- "95" # backwards compatability
   		}else {
   			sig.level <- round(max(100-x$estimates$alpha.sig*100, x$estimates$alpha.sig*100),1)
   		}
-  
-    				
+
+
   		if(!is.null(x$estimates$EY1)){
   			if(is.null(x$estimates$EY0)){  # not a typo!!
   				cat(" Population Mean")
@@ -317,12 +317,12 @@ print.tmle <- function(x,...) {
 			cat("\n   ",paste0(sig.level,"%"), "Conf Interval: ",paste("(", signif(x$estimates$EY1$CI[1],5), ", ", signif(x$estimates$EY1$CI[2],5), ")", sep=""))
 			if(!is.na(x$estimates$EY1$bs.CI.twosided[1])){
 			#cat("\n     bs",paste0(sig.level,"%"),"2-sided Conf Interval:",paste("(", signif(x$estimates$EY1$bs.CI.twosided[1],5), ", ", signif(x$estimates$EY1$bs.CI.twosided[2],5), ")", sep=""))
-				cat("\n       quantile-based: ",paste("(", signif(x$estimates$EY1$bs.CI.twosided[1],5), ", ", signif(x$estimates$EY1$bs.CI.twosided[2],5), ")", sep=""))   
+				cat("\n       quantile-based: ",paste("(", signif(x$estimates$EY1$bs.CI.twosided[1],5), ", ", signif(x$estimates$EY1$bs.CI.twosided[2],5), ")", sep=""))
 			}
-			cat("\n\n") 
+			cat("\n\n")
 		}
-		
-  				
+
+
   		if(!is.null(x$estimates$EY0)){
   			cat(" Marginal mean under comparator (EY0)")
 			cat("\n   Parameter Estimate: ", signif(x$estimates$EY0$psi,5))
@@ -331,22 +331,22 @@ print.tmle <- function(x,...) {
 			cat("\n   ",paste0(sig.level,"%"), "Conf Interval: ",paste("(", signif(x$estimates$EY0$CI[1],5), ", ", signif(x$estimates$EY0$CI[2],5), ")", sep=""))
 			if(!is.na(x$estimates$EY0$bs.CI.twosided[1])){
 			#cat("\n     bs",paste0(sig.level,"%"),"2-sided Conf Interval:",paste("(", signif(x$estimates$EY1$bs.CI.twosided[1],5), ", ", signif(x$estimates$EY1$bs.CI.twosided[2],5), ")", sep=""))
-				cat("\n       quantile-based: ",paste("(", signif(x$estimates$EY0$bs.CI.twosided[1],5), ", ", signif(x$estimates$EY0$bs.CI.twosided[2],5), ")", sep=""))   
+				cat("\n       quantile-based: ",paste("(", signif(x$estimates$EY0$bs.CI.twosided[1],5), ", ", signif(x$estimates$EY0$bs.CI.twosided[2],5), ")", sep=""))
 			}
-			cat("\n\n") 
+			cat("\n\n")
 		}
-		
+
 
 		if(!is.null(x$estimates$ATE)){
 			cat(" Additive Effect")
 			cat("\n   Parameter Estimate: ", signif(x$estimates$ATE$psi,5))
 			cat("\n   Estimated Variance: ", signif(x$estimates$ATE$var.psi,5))
 			cat("\n              p-value: ", ifelse(x$estimates$ATE$pvalue <= 2*10^-16, "<2e-16",signif(x$estimates$ATE$pvalue,5)))
-			cat("\n   ",paste0(sig.level,"%"), "Conf Interval: ",paste("(", signif(x$estimates$ATE$CI[1],5), ", ", signif(x$estimates$ATE$CI[2],5), ")", sep="")) 
+			cat("\n   ",paste0(sig.level,"%"), "Conf Interval: ",paste("(", signif(x$estimates$ATE$CI[1],5), ", ", signif(x$estimates$ATE$CI[2],5), ")", sep=""))
 			if(!is.na(x$estimates$ATE$bs.var)){
-				cat("\n       quantile-based: ",paste("(", signif(x$estimates$ATE$bs.CI.twosided[1],5), ", ", signif(x$estimates$ATE$bs.CI.twosided[2],5), ")", sep="")) 
+				cat("\n       quantile-based: ",paste("(", signif(x$estimates$ATE$bs.CI.twosided[1],5), ", ", signif(x$estimates$ATE$bs.CI.twosided[2],5), ")", sep=""))
 			}
-			cat("\n") 
+			cat("\n")
 		}
 		if(!is.null(x$estimates$ATT)){
 			cat("\n Additive Effect among the Treated")
@@ -356,12 +356,12 @@ print.tmle <- function(x,...) {
 			cat("\n   Parameter Estimate: ", signif(x$estimates$ATT$psi,5))
 			cat("\n   Estimated Variance: ", signif(x$estimates$ATT$var.psi,5))
 			cat("\n              p-value: ", ifelse(x$estimates$ATT$pvalue <= 2*10^-16, "<2e-16",signif(x$estimates$ATT$pvalue,5)))
-			cat("\n   ",paste0(sig.level,"%"), "Conf Interval: ",paste("(", signif(x$estimates$ATT$CI[1],5), ", ", signif(x$estimates$ATT$CI[2],5), ")", sep="")) 
+			cat("\n   ",paste0(sig.level,"%"), "Conf Interval: ",paste("(", signif(x$estimates$ATT$CI[1],5), ", ", signif(x$estimates$ATT$CI[2],5), ")", sep=""))
 			if(!is.na(x$estimates$ATT$bs.var)){
-			#cat("\n     bs",paste0(sig.level,"%"),"2-sided Conf Interval:",paste("(", signif(x$estimates$ATT$bs.CI.twosided[1],5), ", ", signif(x$estimates$ATT$bs.CI.twosided[2],5), ")", sep="")) 
-				cat("\n       quantile-based: ",paste("(", signif(x$estimates$ATT$bs.CI.twosided[1],5), ", ", signif(x$estimates$ATT$bs.CI.twosided[2],5), ")", sep="")) 
+			#cat("\n     bs",paste0(sig.level,"%"),"2-sided Conf Interval:",paste("(", signif(x$estimates$ATT$bs.CI.twosided[1],5), ", ", signif(x$estimates$ATT$bs.CI.twosided[2],5), ")", sep=""))
+				cat("\n       quantile-based: ",paste("(", signif(x$estimates$ATT$bs.CI.twosided[1],5), ", ", signif(x$estimates$ATT$bs.CI.twosided[2],5), ")", sep=""))
 			}
-			cat("\n") 
+			cat("\n")
 		}
 		if(!is.null(x$estimates$ATC)){
 			cat("\n Additive Effect among the Controls")
@@ -373,21 +373,21 @@ print.tmle <- function(x,...) {
 			cat("\n              p-value: ", ifelse(x$estimates$ATC$pvalue <= 2*10^-16, "<2e-16",signif(x$estimates$ATC$pvalue,5)))
 			cat("\n   ",paste0(sig.level,"%"), "Conf Interval: ",paste("(", signif(x$estimates$ATC$CI[1],5), ", ", signif(x$estimates$ATC$CI[2],5), ")", sep=""))
 			if(!is.na(x$estimates$ATC$bs.var)){
-			#cat("\n     bs",paste0(sig.level,"%"),"2-sided Conf Interval:",paste("(", signif(x$estimates$ATC$bs.CI.twosided[1],5), ", ", signif(x$estimates$ATC$bs.CI.twosided[2],5), ")", sep="")) 
-				cat("\n       quantile-based: ",paste("(", signif(x$estimates$ATC$bs.CI.twosided[1],5), ", ", signif(x$estimates$ATC$bs.CI.twosided[2],5), ")", sep="")) 
+			#cat("\n     bs",paste0(sig.level,"%"),"2-sided Conf Interval:",paste("(", signif(x$estimates$ATC$bs.CI.twosided[1],5), ", ", signif(x$estimates$ATC$bs.CI.twosided[2],5), ")", sep=""))
+				cat("\n       quantile-based: ",paste("(", signif(x$estimates$ATC$bs.CI.twosided[1],5), ", ", signif(x$estimates$ATC$bs.CI.twosided[2],5), ")", sep=""))
 			}
-			cat("\n")  
+			cat("\n")
 		}
 		if(!is.null(x$estimates$RR)){
 			cat("\n Relative Risk")
 			cat("\n   Parameter  Estimate:", signif(x$estimates$RR$psi,5))
 			cat("\n   Variance(log scale):", signif(x$estimates$RR$var.log.psi,5))
 			cat("\n               p-value:", ifelse(x$estimates$RR$pvalue <= 2*10^-16, "<2e-16",signif(x$estimates$RR$pvalue,5)))
-			cat("\n    ",paste0(sig.level,"%"), "Conf Interval:",paste("(", signif(x$estimates$RR$CI[1],5), ", ", signif(x$estimates$RR$CI[2],5), ")", sep="")) 
+			cat("\n    ",paste0(sig.level,"%"), "Conf Interval:",paste("(", signif(x$estimates$RR$CI[1],5), ", ", signif(x$estimates$RR$CI[2],5), ")", sep=""))
 			if(!is.na(x$estimates$RR$bs.var)){
-				cat("\n        quantile-based:",paste("(", signif(x$estimates$RR$bs.CI.twosided[1],5), ", ", signif(x$estimates$RR$bs.CI.twosided[2],5), ")", sep="")) 
+				cat("\n        quantile-based:",paste("(", signif(x$estimates$RR$bs.CI.twosided[1],5), ", ", signif(x$estimates$RR$bs.CI.twosided[2],5), ")", sep=""))
 			}
-			cat("\n")  
+			cat("\n")
 
 		}
 		if(!is.null(x$estimates$OR)){
@@ -395,11 +395,11 @@ print.tmle <- function(x,...) {
 			cat("\n   Parameter  Estimate:", signif(x$estimates$OR$psi,5))
 			cat("\n   Variance(log scale):", signif(x$estimates$OR$var.log.psi,5))
 			cat("\n               p-value:", ifelse(x$estimates$OR$pvalue <= 2*10^-16, "<2e-16",signif(x$estimates$OR$pvalue,5)))
-			cat("\n    ",paste0(sig.level,"%"), "Conf Interval:",paste("(", signif(x$estimates$OR$CI[1],5), ", ", signif(x$estimates$OR$CI[2],5), ")", sep="")) 
+			cat("\n    ",paste0(sig.level,"%"), "Conf Interval:",paste("(", signif(x$estimates$OR$CI[1],5), ", ", signif(x$estimates$OR$CI[2],5), ")", sep=""))
 			if(!is.na(x$estimates$OR$bs.var)){
-				cat("\n        quantile-based:",paste("(", signif(x$estimates$OR$bs.CI.twosided[1],5), ", ", signif(x$estimates$OR$bs.CI.twosided[2],5), ")", sep=""))  
+				cat("\n        quantile-based:",paste("(", signif(x$estimates$OR$bs.CI.twosided[1],5), ", ", signif(x$estimates$OR$bs.CI.twosided[2],5), ")", sep=""))
 			}
-			cat("\n")  
+			cat("\n")
 
 		}
 	} else {
@@ -408,7 +408,7 @@ print.tmle <- function(x,...) {
 
 
 #-------------print.tmle.list------------------
-# print object returned by tmle 
+# print object returned by tmle
 # when there is a controlled direct effect
 #-----------------------------------------
 print.tmle.list <- function(x,...) {
@@ -421,9 +421,9 @@ print.tmle.list <- function(x,...) {
 }
 
 #-------------summary.tmle.list------------------
-# create tmle summary object for controlled direct 
+# create tmle summary object for controlled direct
 # effect
-#---------------------------------------	 
+#---------------------------------------
 summary.tmle.list <- function(object,...) {
 	summary.tmle.list <- list(Z0=summary(object[[1]]), Z1=summary(object[[2]]))
 	class(summary.tmle.list) <- "summary.tmle.list"
@@ -431,9 +431,9 @@ summary.tmle.list <- function(object,...) {
 }
 
 #-------------print.summary.tmle.list------------------
-# create tmle summary object for controlled direct 
+# create tmle summary object for controlled direct
 # effect
-#---------------------------------------	 
+#---------------------------------------
 print.summary.tmle.list <- function(x,...) {
 	cat("Controlled Direct Effect\n")
 	cat("           ----- Z = 0 -----\n")
@@ -447,20 +447,20 @@ print.summary.tmle.list <- function(x,...) {
 # ------------------
 
 tmle.SL.dbarts2 <-  function(Y, X, newX, family, obsWeights, id, sigest = NA, sigdf = 3, sigquant = 0.90,
-                     k = 2, power = 2.0, base = 0.95, binaryOffset = 0.0, ntree = 200, ndpost = 1000,  nskip = 100, 
+                     k = 2, power = 2.0, base = 0.95, binaryOffset = 0.0, ntree = 200, ndpost = 1000,  nskip = 100,
                      printevery = 100,  keepevery = 1,  keeptrainfits = TRUE,   usequants = FALSE,
                      numcut = 100, printcutoffs = 0,  nthread = 1,   keepcall = TRUE,   verbose = FALSE, ...) {
-                     	
+
     if (!requireNamespace("dbarts", quietly = FALSE)) {
         stop("Loading required package dbarts failed", call. = FALSE)
     }
-   model = dbarts::bart(x.train = X, y.train = Y, x.test = newX, 
-        sigest = sigest, sigdf = sigdf, sigquant = sigquant, 
-        k = k, power = power, base = base, binaryOffset = binaryOffset, 
-        weights = obsWeights, ntree = ntree, ndpost = ndpost, 
-        nskip = nskip, printevery = printevery, keepevery = keepevery, 
-        keeptrainfits = keeptrainfits, usequants = usequants, 
-        numcut = numcut, printcutoffs = printcutoffs, nthread = nthread, 
+   model = dbarts::bart(x.train = X, y.train = Y, x.test = newX,
+        sigest = sigest, sigdf = sigdf, sigquant = sigquant,
+        k = k, power = power, base = base, binaryOffset = binaryOffset,
+        weights = obsWeights, ntree = ntree, ndpost = ndpost,
+        nskip = nskip, printevery = printevery, keepevery = keepevery,
+        keeptrainfits = keeptrainfits, usequants = usequants,
+        numcut = numcut, printcutoffs = printcutoffs, nthread = nthread,
         keepcall = keepcall, keeptrees = TRUE, verbose = verbose)
     if (family$family == "gaussian") {
         pred = model$yhat.test.mean
@@ -480,7 +480,7 @@ predict.tmle.SL.dbarts2 <- function(object, newdata, family, ...) {
     if (!requireNamespace("dbarts", quietly = FALSE)) {
         stop("Loading required package dbarts failed", call. = FALSE)
     }
-     pred = colMeans(predict(object$object, newdata = newdata) ) 
+     pred = colMeans(predict(object$object, newdata = newdata) )
   return(pred)
 }
 #-------------------------------------------------------------
@@ -495,29 +495,29 @@ predict.tmle.SL.dbarts2 <- function(object, newdata, family, ...) {
 # calcLoss <- function(Q, g1W, obsWeights){
 		# -mean(obsWeights * (deltaTerm*Y * log(Q[,"QAW"]) + deltaTerm*(1-Y) * log(1 - Q[,"QAW"]) + A * log(g1W) + (1-A) * log(1 - g1W)))
 # }
-# psi.prev <- psi  <- mean(obsWeights * (Q[,"Q1W"] - Q[, "Q0W"]) * g1W/q) 
+# psi.prev <- psi  <- mean(obsWeights * (Q[,"Q1W"] - Q[, "Q0W"]) * g1W/q)
 # H1.AW =  (A -(1-A) * g1W / (1-g1W)) * deltaTerm
-# IC.prev <- IC.cur <- obsWeights * (H1.AW * (Y-Q[, "QAW"]) + A*(Q[,"Q1W"]-Q[,"Q0W"] - psi))/q 
+# IC.prev <- IC.cur <- obsWeights * (H1.AW * (Y-Q[, "QAW"]) + A*(Q[,"Q1W"]-Q[,"Q0W"] - psi))/q
 # deriv <-  mean(obsWeights * (H1.AW* (Y-Q[, "QAW"]) + A*(Q[,"Q1W"]-Q[,"Q0W"] - psi)) )
 # if (deriv > 0) { depsilon <- -depsilon}
 # loss.prev <- Inf
  	# loss.cur <-  calcLoss(Q, g1W, obsWeights)
- 	# if(is.nan(loss.cur) | is.na(loss.cur) | is.infinite(loss.cur)) { 
+ 	# if(is.nan(loss.cur) | is.na(loss.cur) | is.infinite(loss.cur)) {
  		# loss.cur <- Inf
  		# loss.prev <- 0
  	# }
  	# iter <-  0
  	# while (loss.prev > loss.cur & iter < max_iter){
-	# IC.prev <-  IC.cur		
+	# IC.prev <-  IC.cur
 	# Q.prev <- Q
-	# g1W.prev <- g1W	
-	# g1W <- .bound(plogis(qlogis(g1W.prev) - depsilon  * (Q.prev[,"Q1W"] - Q.prev[,"Q0W"] - psi.prev)), gbounds) 
+	# g1W.prev <- g1W
+	# g1W <- .bound(plogis(qlogis(g1W.prev) - depsilon  * (Q.prev[,"Q1W"] - Q.prev[,"Q0W"] - psi.prev)), gbounds)
  		# H1 <- cbind(HAW = deltaTerm * (A - (1-A) * g1W.prev / (1-g1W.prev)),
 				  # H0W =   - g1W.prev/(1-g1W.prev) / pDelta1[,1],
-				  # H1W =   1/pDelta1[,2]) 
- 		# Q  <- .bound(plogis(qlogis(Q.prev) - depsilon   * H1), Qbounds) 
+				  # H1W =   1/pDelta1[,2])
+ 		# Q  <- .bound(plogis(qlogis(Q.prev) - depsilon   * H1), Qbounds)
  		# psi.prev <- psi
- 		# psi <- mean(obsWeights * (Q[,"Q1W"] - Q[, "Q0W"]) * g1W/q) 
+ 		# psi <- mean(obsWeights * (Q[,"Q1W"] - Q[, "Q0W"]) * g1W/q)
  		# loss.prev <- loss.cur
  		# loss.cur <- calcLoss(Q, g1W, obsWeights)
  		# IC.cur <- obsWeights * ((A - (1-A) * g1W / (1-g1W)) * deltaTerm * (Y-Q[, "QAW"]) + A *(Q[,"Q1W"]-Q[,"Q0W"] - psi))/q
@@ -538,32 +538,32 @@ deltaTerm <- Delta / pDelta1[cbind(1:nrow(pDelta1), A+1)]
 calcLoss <- function(Q, g1W, g0W, obsWeights){
 		-mean(obsWeights * (deltaTerm*Y * log(Q[,"QAW"]) + deltaTerm*(1-Y) * log(1 - Q[,"QAW"]) + A * log(g1W) + (1-A) * log(g0W)))
 }
-psi.prev <- psi  <- mean(obsWeights * (Q[,"Q1W"] - Q[, "Q0W"]) * g1W/q) 
+psi.prev <- psi  <- mean(obsWeights * (Q[,"Q1W"] - Q[, "Q0W"]) * g1W/q)
 H1.AW =  (A -(1-A) * g1W / g0W) * deltaTerm
-IC.prev <- IC.cur <- obsWeights * (H1.AW * (Y-Q[, "QAW"]) + A*(Q[,"Q1W"]-Q[,"Q0W"] - psi))/q 
+IC.prev <- IC.cur <- obsWeights * (H1.AW * (Y-Q[, "QAW"]) + A*(Q[,"Q1W"]-Q[,"Q0W"] - psi))/q
 deriv <-  mean(obsWeights * (H1.AW* (Y-Q[, "QAW"]) + A*(Q[,"Q1W"]-Q[,"Q0W"] - psi)) )
 if (deriv > 0) { depsilon <- -depsilon}
 loss.prev <- Inf
  	loss.cur <-  calcLoss(Q, g1W, g0W, obsWeights)
- 	if(is.nan(loss.cur) | is.na(loss.cur) | is.infinite(loss.cur)) { 
+ 	if(is.nan(loss.cur) | is.na(loss.cur) | is.infinite(loss.cur)) {
  		loss.cur <- Inf
  		loss.prev <- 0
  	}
  	iter <-  0
  	while (loss.prev > loss.cur & iter < max_iter){
-	IC.prev <-  IC.cur		
+	IC.prev <-  IC.cur
 	Q.prev <- Q
-	g1W.prev <- g1W	
+	g1W.prev <- g1W
 	g0W.prev <- g0W
 	g1W <- plogis(qlogis(g1W.prev) - depsilon  * (Q.prev[,"Q1W"] - Q.prev[,"Q0W"] - psi.prev))
 	g0W <- .bound(1-g1W, c(1, min(gbounds)))
-	g1W <- .bound(g1W, c(1, min(gbounds))) 
+	g1W <- .bound(g1W, c(1, min(gbounds)))
  		H1 <- cbind(HAW = deltaTerm * (A - (1-A) * g1W.prev / (1-g1W.prev)),
 				  H0W =   - g1W.prev/(1-g1W.prev) / pDelta1[,1],
-				  H1W =   1/pDelta1[,2]) 
- 		Q  <- .bound(plogis(qlogis(Q.prev) - depsilon   * H1), Qbounds) 
+				  H1W =   1/pDelta1[,2])
+ 		Q  <- .bound(plogis(qlogis(Q.prev) - depsilon   * H1), Qbounds)
  		psi.prev <- psi
- 		psi <- mean(obsWeights * (Q[,"Q1W"] - Q[, "Q0W"]) * g1W/q) 
+ 		psi <- mean(obsWeights * (Q[,"Q1W"] - Q[, "Q0W"]) * g1W/q)
  		loss.prev <- loss.cur
  		loss.cur <- calcLoss(Q, g1W, g0W, obsWeights)
  		IC.cur <- obsWeights * ((A - (1-A) * g1W / g0W) * deltaTerm * (Y-Q[, "QAW"]) + A *(Q[,"Q1W"]-Q[,"Q0W"] - psi))/q
@@ -576,7 +576,7 @@ loss.prev <- Inf
 
 # TMLE for Marginal Structural Models
 # Reference: Rosenblum&vanderLaan2010, Targeted Maxium Likelihood Estimation of the Parameter of a Marginal Structural Model, The International Journal of Biostatistics, volume 6, Issue 2, Article 19.
-# Note in Documentation: hAV values passed in has to be an nx2 matrix, (A=0, A=1) so that 
+# Note in Documentation: hAV values passed in has to be an nx2 matrix, (A=0, A=1) so that
 # we can have weights 1 for both. , same with pDelta1, at least nx2, with (A=0, A=1)
 #--------
 # source("/Users/Susan/cTMLE/tmle/MSM/tmleFunctionsinCommon.R")
@@ -586,7 +586,7 @@ loss.prev <- Inf
 # return values of psi, se, pvalue, 95% conf interval,
 # sigma, epsilon, psi.Qinit
 # and models for Q, g, g.Delta, if available
-#---------------------------------------	 
+#---------------------------------------
 summary.tmleMSM <- function(object,...) {
   if(inherits(object, "tmleMSM")){
 		Qmodel <- Qcoef <- gmodel <- gcoef <- g.Deltamodel <- g.Deltacoef <- NULL
@@ -594,7 +594,7 @@ summary.tmleMSM <- function(object,...) {
 		Qterms <- gterms <- g.Deltaterms <- g.AVterms <- ""
 		if(!is.null(object$Qinit)){
 		  if (!is.null(object$Qinit$coef)) {
-			Qcoef <- object$Qinit$coef	
+			Qcoef <- object$Qinit$coef
 			if(inherits(Qcoef, "matrix")){
 				Qterms <- colnames(Qcoef)
 			} else {
@@ -603,7 +603,7 @@ summary.tmleMSM <- function(object,...) {
 			Qmodel <- paste("Y ~ 1")
 			if(length(Qterms) > 1) {
 				Qmodel <- paste("Y ~ ", paste(Qterms, collapse =" + "))
-			} 
+			}
 		  } else {
 		  	Qmodel <- object$Qinit$type
 		  }
@@ -616,11 +616,11 @@ summary.tmleMSM <- function(object,...) {
 				gterms <- colnames(gcoef)
 			} else {
 				gterms <- names(gcoef)
-			}			
+			}
 			gmodel <- paste("A ~ 1")
 			if(length(gterms) > 1) {
 				gmodel <- paste("A ~ ", paste(gterms, collapse =" + "))
-			} 
+			}
 		}}
 		if(!is.null(object$g.AV)){
 		if (!is.null(object$g.AV$coef)) {
@@ -629,11 +629,11 @@ summary.tmleMSM <- function(object,...) {
 				g.AVterms <- colnames(g.AVcoef)
 			} else {
 				g.AVterms <- names(g.AVcoef)
-			}			
+			}
 			g.AVmodel <- paste("A ~ 1")
 			if(length(g.AVterms) > 1) {
 				g.AVmodel <- paste("A ~", paste(g.AVterms, collapse =" + "))
-			} 
+			}
 		}}
 		if(!is.null(object$g.Delta)){
 		if (!is.null(object$g.Delta$coef)) {
@@ -642,21 +642,21 @@ summary.tmleMSM <- function(object,...) {
 				g.Deltaterms <- colnames(g.Deltacoef)
 			} else {
 				g.Deltaterms <- names(g.Deltacoef)
-			}			
+			}
 			g.Deltamodel <- paste("Delta ~ 1")
 			if(length(g.Deltaterms) > 1) {
 				g.Deltamodel <- paste("Delta ~", paste(g.Deltaterms, collapse =" + "))
-			} 
+			}
 		}}
 		estimates <- round(cbind(object$psi, object$se, object$pvalue, object$lb, object$ub),3)
 		colnames(estimates) <- c("psi", "SE", "p-value", "lb", "ub")
 		estimates[,"p-value"] <- signif(object$pvalue, 3)
 		estimates[estimates[,"p-value"]< 2*10^-16, "p-value"] <- NA
-		summary.tmleMSM <- list(estimates=estimates, sigma=object$sigma, 
+		summary.tmleMSM <- list(estimates=estimates, sigma=object$sigma,
 						Qmodel=Qmodel, Qterms=Qterms, Qcoef=Qcoef, Qtype=object$Qinit$type,
-						gbd=gbd, gmodel=gmodel, gterms=gterms, gcoef=gcoef,gtype=object$g$type, 
+						gbd=gbd, gmodel=gmodel, gterms=gterms, gcoef=gcoef,gtype=object$g$type,
 						g.AVmodel=g.AVmodel, g.AVterms=g.AVterms, g.AVcoef=g.AVcoef, g.AVtype=object$g.AV$type,
-						g.Deltamodel=g.Deltamodel, g.Deltaterms=g.Deltaterms, g.Deltacoef=g.Deltacoef, 
+						g.Deltamodel=g.Deltamodel, g.Deltaterms=g.Deltaterms, g.Deltacoef=g.Deltacoef,
 						g.Deltatype=object$g.Delta$type, psi.Qinit=object$psi.Qinit)
 		class(summary.tmleMSM) <- "summary.tmleMSM"
 	} else {
@@ -684,7 +684,7 @@ print.summary.tmleMSM <- function(x,...) {
   	}
   	cat("\n Estimation of g (treatment mechanism)\n")
   	cat("\t Procedure:", x$gtype,"\n")
-  	if(!(is.na(x$gcoef[1]))){	
+  	if(!(is.na(x$gcoef[1]))){
  		cat("\t Model:\n\t\t", x$gmodel, "\n")
   		cat("\n\t Coefficients: \n")
   		terms <- sprintf("%15s", x$gterms)
@@ -694,7 +694,7 @@ print.summary.tmleMSM <- function(x,...) {
   	}}
   	cat("\n Estimation of h(A,V)\n")
   	cat("\t Procedure:", x$g.AVtype, "\n")
-  	if(!(is.na(x$g.AVcoef[1]))){		
+  	if(!(is.na(x$g.AVcoef[1]))){
   		cat("\t Model:\n\t\t",x$g.AVmodel, "\n")
   		cat("\n\t Coefficients: \n")
   		terms <- sprintf("%15s", x$g.AVterms)
@@ -704,7 +704,7 @@ print.summary.tmleMSM <- function(x,...) {
   	}}
   	cat("\n Estimation of g.Delta (missingness mechanism)\n")
   	cat("\t Procedure:", x$g.Deltatype, "\n")
-  	if(!(is.na(x$g.Deltacoef[1]))){		
+  	if(!(is.na(x$g.Deltacoef[1]))){
   		cat("\t Model:\n\t\t",x$g.Deltamodel, "\n")
   		cat("\n\t Coefficients: \n")
   		terms <- sprintf("%15s", x$g.Deltaterms)
@@ -720,7 +720,7 @@ print.summary.tmleMSM <- function(x,...) {
 	if(!is.null(x$sigma)){
 		cat("\n Variance-covariance matrix\n")
 		print(x$sigma,3)
-	} 
+	}
   } else {
   	 stop("Error calling print.summary.tmleMSM. 'x' needs to have class 'summary.tmleMSM'\n")
   }
@@ -747,12 +747,12 @@ print.tmleMSM <- function(x,...) {
 		    	cat("\n Standard Errors\n  ")
 		    	names(x$se) <- colnames(x$sigma)
 		    	print(x$se,3)
-			} 
+			}
 			if(!is.null(x$lb)){
 		    	cat("\n 95% Confidence Intervals\n  ")
 		    	print(rbind(lb=x$lb, ub=x$ub),3)
-			} 
-		}	
+			}
+		}
 	} else {
  		stop("Error calling print.tmle. 'x' needs to have class 'tmle'\n")
  }}
@@ -773,7 +773,7 @@ calcSigma <- function(hAV, gAVW, Y, Q, mAV, covar.MSM, covar.MSMA0, covar.MSMA1,
    			derivFactor <- matrix(1, nrow=nrow(mAV), ncol = 2)
    		}
    		deriv.term2 <-  apply(cbind(-hAV[,"h0V"]* I.V * derivFactor[,1] * covar.MSMA0, covar.MSMA0), 1, f)
-   		deriv.term3 <-  apply(cbind(-hAV[,"h1V"]* I.V * derivFactor[,2] * covar.MSMA1, covar.MSMA1), 1, f) 
+   		deriv.term3 <-  apply(cbind(-hAV[,"h1V"]* I.V * derivFactor[,2] * covar.MSMA1, covar.MSMA1), 1, f)
    		ddpsi.D <- as.matrix(deriv.term2 + deriv.term3)
    		M <- -matrix(rowMeans(ddpsi.D), nrow=nterms)
 
@@ -800,15 +800,15 @@ calcSigma <- function(hAV, gAVW, Y, Q, mAV, covar.MSM, covar.MSMA0, covar.MSMA1,
    return(sigma)
 }
 
-tmleMSM <- function(Y,A,W,V,T=rep(1,length(Y)), Delta=rep(1, length(Y)), MSM, v=NULL, 
-				Q=NULL, Qform=NULL, 
+tmleMSM <- function(Y,A,W,V,T=rep(1,length(Y)), Delta=rep(1, length(Y)), MSM, v=NULL,
+				Q=NULL, Qform=NULL,
 				Qbounds=c(-Inf, Inf), Q.SL.library=c("SL.glm", "tmle.SL.dbarts2", "SL.glmnet"), cvQinit = TRUE,
-				hAV=NULL, hAVform=NULL,  
-				g1W = NULL, gform=NULL, 
-				pDelta1=NULL, g.Deltaform=NULL, 
-				g.SL.library=c("SL.glm", "tmle.SL.dbarts.k.5", "SL.gam"), 
+				hAV=NULL, hAVform=NULL,
+				g1W = NULL, gform=NULL,
+				pDelta1=NULL, g.Deltaform=NULL,
+				g.SL.library=c("SL.glm", "tmle.SL.dbarts.k.5", "SL.gam"),
 				g.Delta.SL.library = c("SL.glm", "tmle.SL.dbarts.k.5", "SL.gam"),
-				ub = sqrt(sum(Delta))* log(sum(Delta)) / 5, 
+				ub = sqrt(sum(Delta))* log(sum(Delta)) / 5,
 				family="gaussian", fluctuation="logistic", alpha  = 0.995,
 				id=1:length(Y), V.Q=10, V.g = 10, V.Delta = 10, inference=TRUE, verbose=FALSE, Q.discreteSL = FALSE, g.discreteSL = FALSE, alpha.sig = 0.05, obsWeights = NULL) {
 	mult <- abs(qnorm(alpha.sig/2))
@@ -820,7 +820,7 @@ tmleMSM <- function(Y,A,W,V,T=rep(1,length(Y)), Delta=rep(1, length(Y)), MSM, v=
 	} else {
 		I.V <- as.numeric(V==v)
 	}
-	
+
 	V <- as.matrix(V)
 	colnames(V) <- .setColnames(colnames(V), NCOL(V), "V")
 
@@ -830,13 +830,13 @@ tmleMSM <- function(Y,A,W,V,T=rep(1,length(Y)), Delta=rep(1, length(Y)), MSM, v=
 
 	W <- as.matrix(W)
 	colnames(W) <- .setColnames(colnames(W), NCOL(W), "W")
-	
+
 	if(identical (family, binomial)){
 		family <- "binomial"
 	} else if (identical(family, gaussian)){
 		family <- "gaussian"
 	}
-	
+
 	if (is.null (obsWeights)){
 	 	obsWeights <- rep(1, length(Y))
 	 } else {
@@ -845,12 +845,12 @@ tmleMSM <- function(Y,A,W,V,T=rep(1,length(Y)), Delta=rep(1, length(Y)), MSM, v=
 	if(!.verifyArgs(Y,Z=NULL,A,cbind(V,W,T),Delta, Qform, gform, hAVform, g.Deltaform, obsWeights)){
 		stop()
 	}
-	
+
 	maptoYstar <- fluctuation=="logistic" | family=="binomial"
 
 #---- Stage 1 -----
 	stage1 <- .initStage1(Y=Y,A=A, Q=Q, Delta=Delta, Qbounds=Qbounds, alpha=alpha, maptoYstar=maptoYstar, family=family)
-	Qinit <- suppressWarnings(estimateQ(Y=stage1$Ystar,Z=rep(1, length(Y)), A=A, 
+	Qinit <- suppressWarnings(estimateQ(Y=stage1$Ystar,Z=rep(1, length(Y)), A=A,
 			W=cbind(W,V,T), Delta=(I.V==1 & Delta==1),
 			Q=stage1$Q, Qbounds=stage1$Qbounds, Qform=Qform, maptoYstar = maptoYstar,
 			SL.library=Q.SL.library, cvQinit=cvQinit, family=family, id=id, V = V.Q, verbose=verbose, discreteSL=Q.discreteSL,
@@ -858,7 +858,7 @@ tmleMSM <- function(Y,A,W,V,T=rep(1,length(Y)), Delta=rep(1, length(Y)), MSM, v=
 
 #---- Stage 2 -----
     if(is.null(hAV)){
-    	gAV <- suppressWarnings(estimateG(d=data.frame(A,V,T), hAV, hAVform,g.SL.library, id, V=V.g, verbose, 
+    	gAV <- suppressWarnings(estimateG(d=data.frame(A,V,T), hAV, hAVform,g.SL.library, id, V=V.g, verbose,
     			message="h(A,V)", outcome="A",  discreteSL= g.discreteSL, obsWeights = obsWeights))
 		hAV <- cbind((1-A)*(1-gAV$g1W) + A*gAV$g1W, 1-gAV$g1W, gAV$g1W)
 	} else {
@@ -870,56 +870,56 @@ tmleMSM <- function(Y,A,W,V,T=rep(1,length(Y)), Delta=rep(1, length(Y)), MSM, v=
 	}
 	colnames(hAV) <- c("hAV", "h0V", "h1V")
 	if (is.null(v)){
-		g <- suppressWarnings(estimateG(d=data.frame(A,V,W,T), g1W, gform,g.SL.library, id, V=V.g, verbose, 
+		g <- suppressWarnings(estimateG(d=data.frame(A,V,W,T), g1W, gform,g.SL.library, id, V=V.g, verbose,
     			message="treatment mechanism", outcome="A",  discreteSL=g.discreteSL, obsWeights = obsWeights))
-	} else {	
-		g <- suppressWarnings(estimateG(d=data.frame(A,V,W,T), g1W, gform,g.SL.library, id, V=V.g, verbose, 
+	} else {
+		g <- suppressWarnings(estimateG(d=data.frame(A,V,W,T), g1W, gform,g.SL.library, id, V=V.g, verbose,
     			message="treatment mechanism", outcome="A", newdata=data.frame(A,V=v, W,T),  discreteSL=g.discreteSL, obsWeights = obsWeights))
    }
    g$bound <- c(0,ub)
    if(g$type=="try-error"){
- 		stop("Error estimating treatment mechanism (hint: only numeric variables are allowed)") 
+ 		stop("Error estimating treatment mechanism (hint: only numeric variables are allowed)")
  	}
- 	g.Delta <- estimateG(d=data.frame(Delta, Z=1, A, W,V,T), pDelta1, g.Deltaform, 
- 		g.SL.library,id=id, V = V.Delta, verbose, "missingness mechanism", outcome="D",  discreteSL=g.discreteSL, obsWeights = obsWeights) 
+ 	g.Delta <- estimateG(d=data.frame(Delta, Z=1, A, W,V,T), pDelta1, g.Deltaform,
+ 		g.SL.library,id=id, V = V.Delta, verbose, "missingness mechanism", outcome="D",  discreteSL=g.discreteSL, obsWeights = obsWeights)
 	g1VW <- g$g1W * g.Delta$g1W[,"Z0A1"]
 	g0VW <- (1-g$g1W) * g.Delta$g1W[,"Z0A0"]
 	gAVW <- A*g1VW + (1-A)*g0VW
 
 	MSMformula <- formula(paste("Y~",MSM))
-	
+
 	mfA <- model.frame(MSMformula, data=data.frame(Y,A,V,W,T))  # Added Y Oct 24 ,2011
 	mf0 <- model.frame(MSMformula, data=data.frame(Y,A=rep(0,n),V,W,T))
 	mf1 <- model.frame(MSMformula, data=data.frame(Y,A=rep(1,n),V,W,T))
-	
+
 	covar.MSM   <- model.matrix(MSMformula, mfA)
 	covar.MSMA0 <- model.matrix(MSMformula, mf0)
 	covar.MSMA1 <- model.matrix(MSMformula, mf1)
-		
+
 	if(verbose){cat("\tTargeting Q\n")}
-	C1 <- I.V * .bound(hAV[,"hAV"]/gAVW, c(0,ub)) * covar.MSM  
+	C1 <- I.V * .bound(hAV[,"hAV"]/gAVW, c(0,ub)) * covar.MSM
 	sub <- I.V==1 & Delta==1
 	suppressWarnings(
-	  epsilon <- coef(glm(stage1$Ystar[sub] ~ -1 + offset(Qinit$Q[sub,"QAW"]) + C1[sub,], family=Qinit$family, 
+	  epsilon <- coef(glm(stage1$Ystar[sub] ~ -1 + offset(Qinit$Q[sub,"QAW"]) + C1[sub,], family=Qinit$family,
 	  				weights = obsWeights[sub]))
 	)
 	Qstar <- cbind(Qinit$Q[,"QAW"] + C1 %*% epsilon,
 					 Qinit$Q[,"Q0W"] + .bound(hAV[,"h0V"]/g0VW, c(0,ub)) * covar.MSMA0 %*% epsilon,
 					 Qinit$Q[,"Q1W"] + .bound(hAV[,"h1V"]/g1VW, c(0,ub)) * covar.MSMA1 %*% epsilon)
 	if(identical(Qinit$family, "binomial")){
-		Qstar <- plogis(Qstar)*diff(stage1$ab)+stage1$ab[1] 
+		Qstar <- plogis(Qstar)*diff(stage1$ab)+stage1$ab[1]
 		Qinit$Q <- plogis(Qinit$Q)*diff(stage1$ab)+stage1$ab[1]
 		Ystar <- stage1$Ystar*diff(stage1$ab)+stage1$ab[1]
 	}
    colnames(Qstar) <- c("QAW", "Q0W", "Q1W")
-  
+
    if(verbose){cat("\tEvaluating MSM parameters\n")}
-	d.Qstar <- data.frame(Y=c(Qstar[,"Q0W"], Qstar[,"Q1W"]), 
+	d.Qstar <- data.frame(Y=c(Qstar[,"Q0W"], Qstar[,"Q1W"]),
 							rbind(mf0, mf1),
 							wts=c(hAV[,"h0V"], hAV[,"h1V"])*obsWeights)
 	suppressWarnings(
-		psi.Qstar <- coef(glm(MSMformula, data=d.Qstar, 
-							weights=d.Qstar$wts, family=family)) 
+		psi.Qstar <- coef(glm(MSMformula, data=d.Qstar,
+							weights=d.Qstar$wts, family=family))
 	)
 	d.Qinit <- replace(d.Qstar,1, c(Qinit$Q[,"Q0W"], Qinit$Q[,"Q1W"]))
 	suppressWarnings(
@@ -944,7 +944,7 @@ tmleMSM <- function(Y,A,W,V,T=rep(1,length(Y)), Delta=rep(1, length(Y)), MSM, v=
     }
     Qinit$Q <- Qinit$Q[,-1]
     returnVal <- list(psi=psi.Qstar, sigma=sigma,se=se, pvalue=pvalue, lb=lb, ub=ub, epsilon=epsilon,  psi.Qinit=psi.Qinit,  Qstar=Qstar[,-1], Qinit=Qinit, g=g, g.AV=gAV, g.Delta=g.Delta)
-    class(returnVal) <- "tmleMSM" 
+    class(returnVal) <- "tmleMSM"
 	return(returnVal)
 }
 
@@ -957,7 +957,7 @@ tmleMSM <- function(Y,A,W,V,T=rep(1,length(Y)), Delta=rep(1, length(Y)), MSM, v=
 	validFormula <- sapply(formulas, function(x){identical(class(try(as.formula(x))), "formula")})
 	validNames <- c("Y", "Z", "A", ".", "Delta", colnames(W))
 	validTerms <- rep(TRUE, length(formulas))
-	validTerms[validFormula] <- sapply(formulas[which(validFormula)], 
+	validTerms[validFormula] <- sapply(formulas[which(validFormula)],
 			function(x){is.null(x) || all(all.names(as.formula(x), functions=FALSE) %in% validNames)})
 	ok <- c(length(Y) == length(A) & length(A) == NROW(W) & length(A)==NROW(Delta),
 			sum(is.na(A), is.na(W)) == 0,
@@ -990,12 +990,12 @@ tmleMSM <- function(Y,A,W,V,T=rep(1,length(Y)), Delta=rep(1, length(Y)), MSM, v=
 }
 
 # #---------.sg.glm.interaction --------
-# # Old versions of SL don't have SL.glm.interaction defined.  
+# # Old versions of SL don't have SL.glm.interaction defined.
 # # This will define it.
 
-# .sg.glm.interaction <- function (Y.temp, X.temp, newX.temp, family, obsWeights, ...) 
+# .sg.glm.interaction <- function (Y.temp, X.temp, newX.temp, family, obsWeights, ...)
 # {
-    # fit.glm <- glm(Y.temp ~ .^2, data = X.temp, family = family, 
+    # fit.glm <- glm(Y.temp ~ .^2, data = X.temp, family = family,
         # weights = obsWeights)
     # out <- predict(fit.glm, newdata = newX.temp, type = "response")
     # fit <- list(object = fit.glm)
@@ -1011,12 +1011,12 @@ tmleMSM <- function(Y,A,W,V,T=rep(1,length(Y)), Delta=rep(1, length(Y)), MSM, v=
 # -------------tmle.SL.dbarts.k.5------------------
 # Use dbarts to estimate g with k = 0.5 instead of the default of k=2.
 # This may undersmooth / overfit, but k=2 shrinks g too far from (0,1).
- tmle.SL.dbarts.k.5 <- function (Y, X, newX, family, obsWeights, id, sigest = NA, sigdf = 3, 
-    sigquant = 0.9, k = 0.5, power = 2, base = 0.95, binaryOffset = 0, 
-    ntree = 200, ndpost = 1000, nskip = 100, printevery = 100, 
-    keepevery = 1, keeptrainfits = TRUE, usequants = FALSE, numcut = 100, 
-    printcutoffs = 0, nthread = 1, keepcall = TRUE, verbose = FALSE, 
-    ...) 
+ tmle.SL.dbarts.k.5 <- function (Y, X, newX, family, obsWeights, id, sigest = NA, sigdf = 3,
+    sigquant = 0.9, k = 0.5, power = 2, base = 0.95, binaryOffset = 0,
+    ntree = 200, ndpost = 1000, nskip = 100, printevery = 100,
+    keepevery = 1, keeptrainfits = TRUE, usequants = FALSE, numcut = 100,
+    printcutoffs = 0, nthread = 1, keepcall = TRUE, verbose = FALSE,
+    ...)
 {
 		tmle.SL.dbarts2 (Y, X, newX, family, obsWeights, id, sigest = sigest, sigdf = sigdf, sigquant=sigquant,
 			k = k, power = power, base = base, binaryOffset = binaryOffset, ntree=ntree, ndpost = ndpost, nskip = nskip,
@@ -1059,12 +1059,12 @@ tmleMSM <- function(Y,A,W,V,T=rep(1,length(Y)), Delta=rep(1, length(Y)), MSM, v=
 }
 
 #---------- function .setV ---------------
-# Set the number of cross-validation 
+# Set the number of cross-validation
 # folds as a function of n.effective
 #-----------------------------------------
 .setV <- function(n.effective){
 	if(n.effective <= 30){
-		V <- n.effective 
+		V <- n.effective
 	} else if (n.effective <= 500) {
 		V <- 20
 	} else if (n.effective <= 1000) {
@@ -1091,7 +1091,7 @@ tmleMSM <- function(Y,A,W,V,T=rep(1,length(Y)), Delta=rep(1, length(Y)), MSM, v=
 .initStage1 <- function(Y,A, Q, Q.Z1=NULL, Delta, Qbounds, alpha, maptoYstar, family){
 	if(family=="binomial") {Qbounds <- c(0,1)}
  	if(is.null(Qbounds)) {
- 		if(maptoYstar){ 
+ 		if(maptoYstar){
  			Qbounds <- range(Y[Delta==1])
  			Qbounds <- Qbounds + .01*c(-abs(Qbounds[1]),abs(Qbounds[2]))
  		} else {
@@ -1101,13 +1101,13 @@ tmleMSM <- function(Y,A,W,V,T=rep(1,length(Y)), Delta=rep(1, length(Y)), MSM, v=
 	if(!is.null(Q)){
    		QAW <- (1-A)*Q[,1] + A*Q[,2]
    		Q <- cbind(QAW, Q0W=Q[,1], Q1W=Q[,2])
-   	} 
+   	}
    	if(!is.null(Q.Z1)){
    		Q <- cbind(Q, Q0W.Z1=Q.Z1[,1], Q1W.Z1=Q.Z1[,2])
    	}
   	ab <- c(0,1)
    	Ystar <- Y
-   	if(maptoYstar){ 
+   	if(maptoYstar){
    		Ystar <- .bound(Y, Qbounds)
    		if(!is.null(Q)){
    			Q <- .bound(Q, Qbounds)
@@ -1118,28 +1118,28 @@ tmleMSM <- function(Y,A,W,V,T=rep(1,length(Y)), Delta=rep(1, length(Y)), MSM, v=
 							immediate. = TRUE)
 		}
 		ab <- range(Ystar, na.rm=TRUE)
-		Ystar[is.na(Ystar)] <- 0  
-		Ystar <- (Ystar-ab[1])/diff(ab)	
+		Ystar[is.na(Ystar)] <- 0
+		Ystar <- (Ystar-ab[1])/diff(ab)
 		if(!is.null(Q)){Q <- (Q-ab[1])/diff(ab)}
 		Qbounds <- c(alpha, 1-alpha)
-	}	
+	}
 	return(list(Ystar=Ystar, Q=Q, Qbounds=Qbounds, ab=ab))
-} 
+}
 
 
 #-----------estimateQ----------------
 # purpose: estimate Q=E(Y |Z, A,W) data-adaptively,
-# unless super learner not available, or user specifies 
+# unless super learner not available, or user specifies
 # initial values or a regression formula
-# arguments: 
-# 	Y - outcome 
-# 	Z - intermediate variable between A and Y (default= 0 when no int. var.) 
+# arguments:
+# 	Y - outcome
+# 	Z - intermediate variable between A and Y (default= 0 when no int. var.)
 #	A - treatment indicator (1=treatment, 0=control)
 # 	W - baseline covariates
 #	Delta - missingness indicator
 #	Q - optional externally estimated values for Q
-#	Qbounds - bounds for predicted values 
-#  	Qform - optional regression formula to use for glm if 
+#	Qbounds - bounds for predicted values
+#  	Qform - optional regression formula to use for glm if
 #	        non-data adaptive estimation specified
 # 	maptoYstar - if TRUE, using logistic fluctuation for bounded, continuous outcomes
 # 		estimation inital Q on linear scale, bounded by (0,1),and return on logit scale
@@ -1152,12 +1152,12 @@ tmleMSM <- function(Y,A,W,V,T=rep(1,length(Y)), Delta=rep(1, length(Y)), MSM, v=
 # V - number of cross-validation folds
 #  obsWeights- typically sampling weights, e.g., 1/p(selected | YAW)
 # returns matrix of linear predictors for Q(A,W), Q(0,W), Q(1,W),
-#   (for controlled direct effect, 2 additional columns: Q(Z=1,A=0,W), Q(Z=1,A=1,W)) 
+#   (for controlled direct effect, 2 additional columns: Q(Z=1,A=0,W), Q(Z=1,A=1,W))
 #		family for stage 2 targeting
 #		coef, NA, unless Q is estimated using a parametric model
 # 		type, estimation method for Q
 #----------------------------------------
-estimateQ <- function (Y,Z,A,W, Delta, Q, Qbounds, Qform, maptoYstar, 
+estimateQ <- function (Y,Z,A,W, Delta, Q, Qbounds, Qform, maptoYstar,
 		SL.library, cvQinit,  family, id, V, verbose, discreteSL, obsWeights) {
 	.expandLib <- function(SL.lib){
 		if (is.list(SL.lib)){
@@ -1198,7 +1198,7 @@ estimateQ <- function (Y,Z,A,W, Delta, Q, Qbounds, Qform, maptoYstar,
   	  			folds <- vector(mode = "list", length = V)
   	  			uid <- unique(id)
   	  			n.id <- length(uid)
-  	  			id.split <- split(sample(1:n.id), rep(1:V, length = n.id))		
+  	  			id.split <- split(sample(1:n.id), rep(1:V, length = n.id))
   	  	}
   	  	if(!(is.null(Qform))){
   	  		if(identical(as.character(as.formula(Qform)), c("~","Y", "."))){
@@ -1232,7 +1232,7 @@ estimateQ <- function (Y,Z,A,W, Delta, Q, Qbounds, Qform, maptoYstar,
 	  	  		Q[,"Q0W.Z1"] <- predict(m, newdata=data.frame(Y,Z=1,A=0,W), type="response")
 	  	  		Q[,"Q1W.Z1"] <- predict(m, newdata=data.frame(Y,Z=1,A=1,W), type="response")
 	  	  		coef <- coef(m)
-	  	  		type="glm, user-supplied model"	
+	  	  		type="glm, user-supplied model"
   	  		}
   	  	    	Qinit <- list(Q=Q, family=Qfamily, coef=coef, type=type)
   	  	} else {
@@ -1256,8 +1256,8 @@ estimateQ <- function (Y,Z,A,W, Delta, Q, Qbounds, Qform, maptoYstar,
     				arglist <- list(Y=Y[Delta==1],X=X[Delta==1,], newX=newX, SL.library=SL.library,
     			 		cvControl=list(V=V), family=family, control = list(saveFitLibrary=FALSE), id=id[Delta==1], obsWeights = obsWeights[Delta == 1])
     			}
-    			suppressWarnings(m<- try(do.call(SuperLearner, arglist)))	
-  				if(inherits(m,"SuperLearner")){  
+    			suppressWarnings(m<- try(do.call(SuperLearner, arglist)))
+  				if(inherits(m,"SuperLearner")){
   					coef <- m$coef
   					if (discreteSL){
   						keepAlg <- which.min(m$cvRisk)
@@ -1270,8 +1270,8 @@ estimateQ <- function (Y,Z,A,W, Delta, Q, Qbounds, Qform, maptoYstar,
   					}
   					if (cvQinit) {
   						type <- paste0("cv-", type)
-  						# run the chosen learners on each training set, and get predictions for each fold. 
-  						# Have to figure out how to unpack the library to get the correct combination of screeners and algorithms	
+  						# run the chosen learners on each training set, and get predictions for each fold.
+  						# Have to figure out how to unpack the library to get the correct combination of screeners and algorithms
 						SL.library.keep <- .expandLib(SL.library)[keepAlg]
 						predictions <- rep(NA, nrow(newX))
   					   for (v in 1:V) {
@@ -1279,11 +1279,11 @@ estimateQ <- function (Y,Z,A,W, Delta, Q, Qbounds, Qform, maptoYstar,
   	  				 		TRAIN <- rep(TRUE, length(Y))
   	  				 		TRAIN[folds[[v]]] <- FALSE
   	  				 		if (packageDescription("SuperLearner")$Version < SL.version){
-    								arglist <- list(Y=Y[TRAIN & Delta==1],X=X[TRAIN & Delta==1,], newX=newX[!TRAIN,], 
+    								arglist <- list(Y=Y[TRAIN & Delta==1],X=X[TRAIN & Delta==1,], newX=newX[!TRAIN,],
     								SL.library=SL.library.keep,V=V, family=family, save.fit.library=FALSE, id=id[TRAIN & Delta==1],
     								obsWeights = obsWeights[TRAIN & Delta == 1])
   							} else {
-    								arglist <- list(Y=Y[TRAIN & Delta==1],X=X[TRAIN & Delta==1,], newX=newX[!TRAIN,], 
+    								arglist <- list(Y=Y[TRAIN & Delta==1],X=X[TRAIN & Delta==1,], newX=newX[!TRAIN,],
     								SL.library=SL.library.keep, cvControl=list(V=V), family=family, control = list(saveFitLibrary=FALSE),
     								 id=id[TRAIN & Delta==1], obsWeights = obsWeights[TRAIN & Delta == 1])
     						}
@@ -1309,8 +1309,8 @@ estimateQ <- function (Y,Z,A,W, Delta, Q, Qbounds, Qform, maptoYstar,
   					colnames(Q) <- c("QAW", "Q0W", "Q1W", "Q0W.Z1", "Q1W.Z1")[1:ncol(Q)]
   	  			} else {
   	  				stop("Super Learner failed when estimating Q. Exiting program\n")
-  	  			} 
-  	   } 
+  	  			}
+  	   }
   	}
   	if(is.na(Q[1]) | inherits(m, "try-error")){
   	  		if(verbose) {cat("\t Warning: \nRunning main terms regression for 'Q' using glm\n")}
@@ -1328,7 +1328,7 @@ estimateQ <- function (Y,Z,A,W, Delta, Q, Qbounds, Qform, maptoYstar,
 	Q <- .bound(Q, Qbounds)
 	if(maptoYstar | identical(Qfamily,"binomial") | identical(Qfamily, binomial)){
 			Q <- qlogis(Q)
-			Qfamily <- "binomial"	
+			Qfamily <- "binomial"
 	} else if (identical(Qfamily, "poisson") | identical(Qfamily, poisson)) {
 			Q <- log(Q)
 			Qfamily <- "poisson"
@@ -1338,7 +1338,7 @@ estimateQ <- function (Y,Z,A,W, Delta, Q, Qbounds, Qform, maptoYstar,
 }
 
 #---------------.prescreenW.g----------------------
-# Screen covariates for association with Y 
+# Screen covariates for association with Y
 # after initial regression to use in estimating g
 # selects lasso covariates with non-zero coefficients
 # 	Y - outcome on same scale as Q
@@ -1348,12 +1348,12 @@ estimateQ <- function (Y,Z,A,W, Delta, Q, Qbounds, Qform, maptoYstar,
 # family = "binomial", "gaussian", or "poisson", set by estimateQ
 # min.retain = minimum number of of variables to retain
 #------------------------------------------------------
-.prescreenW.g <- function(Y, A, W, Delta, QAW, family, min.retain, obsWeights){  
+.prescreenW.g <- function(Y, A, W, Delta, QAW, family, min.retain, obsWeights){
     if(NCOL(W) < min.retain){
     	min.retain <- NCOL(W)
     }
     #require(glmnet)
-    
+
     m.lasso <- cv.glmnet(W[Delta == 1,], Y[Delta == 1], family =  family,  weights = obsWeights[Delta == 1])
 	beta <- coef(m.lasso, s = m.lasso$lambda.min)[-1] # ignore the intercept
 	retain <- which(abs(beta) > 0)
@@ -1363,7 +1363,7 @@ estimateQ <- function (Y,Z,A,W, Delta, Q, Qbounds, Qform, maptoYstar,
 		} else {
 			retain <- unique( c(retain, order(abs(cor(A, W)))[1:min.retain]))[1:min.retain]
 		}
-	} 
+	}
 	return(retain)
 }
 
@@ -1377,7 +1377,7 @@ estimateQ <- function (Y,Z,A,W, Delta, Q, Qbounds, Qform, maptoYstar,
 #   id - subject identifier
 #  V - number of cross-validation folds
 # verbose - flag, whether or not to print messages
-# message - printed when verbose=TRUE 
+# message - printed when verbose=TRUE
 # outcome - "A" for treatment, "Z" for intermediate variable,
 #           "D" for Delta (missingness)
 # newdata - optional values to predict on (needed by tmleMSM function)
@@ -1415,8 +1415,8 @@ estimateG <- function (d,g1W, gform,SL.library, id, V, verbose, message, outcome
   		suppressWarnings(
   			m <- try(do.call(SuperLearner,arglist))
   		)
-  		if(inherits(m,"SuperLearner")){  
-  			if(discreteSL){ 
+  		if(inherits(m,"SuperLearner")){
+  			if(discreteSL){
     				keepAlg <- which.min(m$cvRisk)
   					g1W <- m$library.predict[,keepAlg]
     		} else {
@@ -1439,14 +1439,14 @@ estimateG <- function (d,g1W, gform,SL.library, id, V, verbose, message, outcome
   	  		m <- try(glm(form,  data=d, family="binomial", weights = obsWeights))
   	  		if(inherits(m, "try-error")){
   				if(verbose){cat("\tInvalid formula supplied. Running glm using main terms\n")}
-				form <- as.formula(paste(colnames(d)[1],"~1 + ", paste(colnames(d)[-1], collapse = "+"), sep="") ) 
+				form <- as.formula(paste(colnames(d)[1],"~1 + ", paste(colnames(d)[-1], collapse = "+"), sep="") )
   	  			m <- glm(form, data=d, family="binomial", weights = obsWeights)
   	  		} else {
   	  			type <- "user-supplied regression formula"
   	  		}
   	  	} else {
   	  	  	if(verbose){cat("\tRunning main terms regression for 'g' using glm\n")}
-			form <- as.formula(paste(colnames(d)[1],"~1", paste(colnames(d)[-1], collapse = "+"), sep="+") ) 
+			form <- as.formula(paste(colnames(d)[1],"~1", paste(colnames(d)[-1], collapse = "+"), sep="+") )
   	  		m <- glm(form, data=d, family="binomial", weights = obsWeights)
   	  	}
   	  	 g1W <- predict(m, newdata=newdata, type="response")
@@ -1454,53 +1454,53 @@ estimateG <- function (d,g1W, gform,SL.library, id, V, verbose, message, outcome
   	  }
   	  # Get counterfactual predicted values
   	  if(outcome=="Z"){
-  	  	if(inherits(m,"SuperLearner")){  
+  	  	if(inherits(m,"SuperLearner")){
   	  		if (discreteSL){
-  	  			g1W <- cbind(predict(m, newdata=data.frame(A=0, newdata[,-(1:2), drop=FALSE]), type="response", 
-  	  								X=d[,-1, drop=FALSE], Y=d[,1])[[2]][,keepAlg], 
-  	  				      predict(m, newdata=data.frame(A=1, newdata[,-(1:2), drop=FALSE]), type="response", 
+  	  			g1W <- cbind(predict(m, newdata=data.frame(A=0, newdata[,-(1:2), drop=FALSE]), type="response",
+  	  								X=d[,-1, drop=FALSE], Y=d[,1])[[2]][,keepAlg],
+  	  				      predict(m, newdata=data.frame(A=1, newdata[,-(1:2), drop=FALSE]), type="response",
   	  				   				X=d[,-1, drop=FALSE], Y=newdata[,1])[[2]][,keepAlg])
   	  		} else {
-  	  			g1W <- cbind(predict(m, newdata=data.frame(A=0, newdata[,-(1:2), drop=FALSE]), type="response", 
-  	  								X=d[,-1, drop=FALSE], Y=d[,1])[[1]], 
-  	  				      predict(m, newdata=data.frame(A=1, newdata[,-(1:2), drop=FALSE]), type="response", 
+  	  			g1W <- cbind(predict(m, newdata=data.frame(A=0, newdata[,-(1:2), drop=FALSE]), type="response",
+  	  								X=d[,-1, drop=FALSE], Y=d[,1])[[1]],
+  	  				      predict(m, newdata=data.frame(A=1, newdata[,-(1:2), drop=FALSE]), type="response",
   	  				   				X=d[,-1, drop=FALSE], Y=newdata[,1])[[1]])
   	  		}
   	  	} else {
-  	  		g1W <- cbind(predict(m, newdata=data.frame(A=0, newdata[,-(1:2), drop=FALSE]), type="response"), 
+  	  		g1W <- cbind(predict(m, newdata=data.frame(A=0, newdata[,-(1:2), drop=FALSE]), type="response"),
   	  				   predict(m, newdata=data.frame(A=1, newdata[,-(1:2), drop=FALSE]), type="response"))
-  	  	}	
+  	  	}
   	  	colnames(g1W) <- c("A0", "A1")
-		
+
   	  } else if (outcome=="D"){
-  	    	if(inherits(m,"SuperLearner")){  
+  	    	if(inherits(m,"SuperLearner")){
   	  		if (discreteSL){
-  	  			g1W <- cbind(predict(m, newdata=data.frame(Z=0, A=0, newdata[,-(1:3), drop=FALSE]), type="response", 
-  	  							X=d[,-1,drop=FALSE], Y=d[,1])[[2]][,keepAlg], 
-  	  			 		  predict(m, newdata=data.frame(Z=0, A=1, newdata[,-(1:3), drop=FALSE]), type="response", 
+  	  			g1W <- cbind(predict(m, newdata=data.frame(Z=0, A=0, newdata[,-(1:3), drop=FALSE]), type="response",
+  	  							X=d[,-1,drop=FALSE], Y=d[,1])[[2]][,keepAlg],
+  	  			 		  predict(m, newdata=data.frame(Z=0, A=1, newdata[,-(1:3), drop=FALSE]), type="response",
   	  			 				X=d[,-1, drop=FALSE], Y=d[,1])[[2]][,keepAlg],
-  	  		  	 		  predict(m, newdata=data.frame(Z=1, A=0, newdata[,-(1:3), drop=FALSE]), type="response", 
-  	  		  	 				X=d[,-1, drop=FALSE], Y=d[,1])[[2]][,keepAlg],	     	     		  
-  	  		  	 			predict(m, newdata=data.frame(Z=1, A=1, newdata[,-(1:3), drop=FALSE]), type="response", 
+  	  		  	 		  predict(m, newdata=data.frame(Z=1, A=0, newdata[,-(1:3), drop=FALSE]), type="response",
+  	  		  	 				X=d[,-1, drop=FALSE], Y=d[,1])[[2]][,keepAlg],
+  	  		  	 			predict(m, newdata=data.frame(Z=1, A=1, newdata[,-(1:3), drop=FALSE]), type="response",
   	  		  	 				X=d[,-1, drop=FALSE], Y=d[,1])[[2]][,keepAlg])
-  	  		} else {  		
-  	  			g1W <- cbind(predict(m, newdata=data.frame(Z=0, A=0, newdata[,-(1:3), drop=FALSE]), type="response", 
-  	  							X=d[,-1,drop=FALSE], Y=d[,1])[[1]], 
-  	  			 		  predict(m, newdata=data.frame(Z=0, A=1, newdata[,-(1:3), drop=FALSE]), type="response", 
+  	  		} else {
+  	  			g1W <- cbind(predict(m, newdata=data.frame(Z=0, A=0, newdata[,-(1:3), drop=FALSE]), type="response",
+  	  							X=d[,-1,drop=FALSE], Y=d[,1])[[1]],
+  	  			 		  predict(m, newdata=data.frame(Z=0, A=1, newdata[,-(1:3), drop=FALSE]), type="response",
   	  			 				X=d[,-1, drop=FALSE], Y=d[,1])[[1]],
-  	  		  	 		  predict(m, newdata=data.frame(Z=1, A=0, newdata[,-(1:3), drop=FALSE]), type="response", 
-  	  		  	 				X=d[,-1, drop=FALSE], Y=d[,1])[[1]],	     	     		  
-  	  		  	 			predict(m, newdata=data.frame(Z=1, A=1, newdata[,-(1:3), drop=FALSE]), type="response", 
+  	  		  	 		  predict(m, newdata=data.frame(Z=1, A=0, newdata[,-(1:3), drop=FALSE]), type="response",
+  	  		  	 				X=d[,-1, drop=FALSE], Y=d[,1])[[1]],
+  	  		  	 			predict(m, newdata=data.frame(Z=1, A=1, newdata[,-(1:3), drop=FALSE]), type="response",
   	  		  	 				X=d[,-1, drop=FALSE], Y=d[,1])[[1]])
   	  		 }
   	   } else{
-  	   	 	g1W <- cbind(predict(m, newdata=data.frame(Z=0, A=0, newdata[,-(1:3), drop=FALSE]), type="response"), 
+  	   	 	g1W <- cbind(predict(m, newdata=data.frame(Z=0, A=0, newdata[,-(1:3), drop=FALSE]), type="response"),
   	  			 		  predict(m, newdata=data.frame(Z=0, A=1, newdata[,-(1:3), drop=FALSE]), type="response"),
   	  		  	 		  predict(m, newdata=data.frame(Z=1, A=0, newdata[,-(1:3), drop=FALSE]), type="response"),	     	     		  predict(m, newdata=data.frame(Z=1, A=1, newdata[,-(1:3), drop=FALSE]), type="response"))
   	   }
   	   colnames(g1W) <- c("Z0A0", "Z0A1", "Z1A0", "Z1A1")
   	  }
-  	}	
+  	}
 } else {
   		type <- "user-supplied values"
   		if(outcome=="Z") {
@@ -1529,21 +1529,21 @@ estimateG <- function (d,g1W, gform,SL.library, id, V, verbose, message, outcome
 #   Delta - missingness indicator
 # 	g1W - values of P(Delta=1|Z,A,W)*P(Z=z|A,W)*P(A=1|W)
 # 	g0W - values of P(Delta=1|Z,A,W)*P(Z=z|A,W)*P(A=0|W)
-#   Delta =- missingness indicator 
+#   Delta =- missingness indicator
 #   Q - nx3 matrix(Q(A,W), Q(0,W), Q(1,W))
 #   mu1 - targeted estimate of EY1
 #   mu0 - targeted estimate of EY0
 #   id - subject id
-#   family - "gaussian" or "binomial" (or "poisson") 
+#   family - "gaussian" or "binomial" (or "poisson")
 #  obsWeights- typically sampling weights, e.g., 1/p(selected | YAW)
 #	alpha.sig - significance level for CI construction
-#  ICflag: FLAG for whether to evaluate IC 
-#          (can take a long time for repeated measures, so if don't 
+#  ICflag: FLAG for whether to evaluate IC
+#          (can take a long time for repeated measures, so if don't
 # 			need IC-based inference don't bother if there are repeated measures)
-# 
+#
 # returns:
-#   list: (EY0, EY1, ATE, ATT, ATC, RR, OR) 
-#	 EY0 - marginal mean outcome under comparator 
+#   list: (EY0, EY1, ATE, ATT, ATC, RR, OR)
+#	 EY0 - marginal mean outcome under comparator
 #	 EY1 - marginal mean outcome under teatment (population mean outcome if no variation in A)
 #	 ATE - additive effect: psi, CI, pvalue
 #	 RR - relative risk (NULL if family != binomial): psi, CI, pvalue, log.psi, var.log.psi
@@ -1577,7 +1577,7 @@ calcParameters <- function(Y,A, I.Z, Delta, g1W, g0W, Q, mu1, mu0, id, family, o
 			}
 			EY0$var.psi <- var(IC.EY0)/n.id
 			EY0$CI <- c(EY0$psi -mult *sqrt(EY0$var.psi), EY0$psi +mult *sqrt(EY0$var.psi))
-			EY0$pvalue <- 2*pnorm(-abs(EY0$psi/sqrt(EY0$var.psi)))	
+			EY0$pvalue <- 2*pnorm(-abs(EY0$psi/sqrt(EY0$var.psi)))
 		}
 
 		EY1$psi <- mu1
@@ -1588,9 +1588,9 @@ calcParameters <- function(Y,A, I.Z, Delta, g1W, g0W, Q, mu1, mu0, id, family, o
 			}
 			EY1$var.psi <- var(IC.EY1)/n.id
 			EY1$CI <- c(EY1$psi -mult *sqrt(EY1$var.psi), EY1$psi +mult *sqrt(EY1$var.psi))
-			EY1$pvalue <- 2*pnorm(-abs(EY1$psi/sqrt(EY1$var.psi)))	
+			EY1$pvalue <- 2*pnorm(-abs(EY1$psi/sqrt(EY1$var.psi)))
 		}
-				
+
 		ATE$psi <- mu1-mu0
 		if (ICflag){
 			IC.ATE<- obsWeights * ( I.Z*(A/g1W - (1-A)/g0W)*Delta*(Y-Q[,"QAW"]) + Q[,"Q1W"] - Q[,"Q0W"] - (mu1-mu0))
@@ -1599,15 +1599,15 @@ calcParameters <- function(Y,A, I.Z, Delta, g1W, g0W, Q, mu1, mu0, id, family, o
 			}
 			ATE$var.psi <- var(IC.ATE)/n.id
 			ATE$CI <- c(ATE$psi -mult *sqrt(ATE$var.psi), ATE$psi +mult *sqrt(ATE$var.psi))
-			ATE$pvalue <- 2*pnorm(-abs(ATE$psi/sqrt(ATE$var.psi)))	
-		}	
-		if(family=="binomial"){	
+			ATE$pvalue <- 2*pnorm(-abs(ATE$psi/sqrt(ATE$var.psi)))
+		}
+		if(family=="binomial"){
 			RR$psi <- mu1/mu0
 			RR$log.psi <- log(RR$psi)
 			OR$psi <-  mu1/(1-mu1)/(mu0 / (1-mu0))
 			OR$log.psi <- log(OR$psi)
-			if (ICflag){	
-				IC.logRR <- obsWeights * (1/mu1*(I.Z*(A/g1W)*Delta*(Y-Q[,"QAW"]) + Q[,"Q1W"] - mu1) - 
+			if (ICflag){
+				IC.logRR <- obsWeights * (1/mu1*(I.Z*(A/g1W)*Delta*(Y-Q[,"QAW"]) + Q[,"Q1W"] - mu1) -
 						1/mu0*(I.Z*(1-A)/g0W*Delta*(Y-Q[,"QAW"])+ Q[,"Q0W"] - mu0))
 				if(n.id < length(id) & ICflag){
 					IC.logRR <- as.vector(by(IC.logRR, id, mean))
@@ -1618,7 +1618,7 @@ calcParameters <- function(Y,A, I.Z, Delta, g1W, g0W, Q, mu1, mu0, id, family, o
 				RR$pvalue <- 2*pnorm(-abs(log(RR$psi)/sqrt(var.psi.logRR)))
 				RR$var.log.psi <- var.psi.logRR
 
-				IC.logOR <- obsWeights * (1/(mu1*(1-mu1)) * (I.Z*A/g1W*Delta*(Y-Q[,"QAW"]) + Q[,"Q1W"]) - 
+				IC.logOR <- obsWeights * (1/(mu1*(1-mu1)) * (I.Z*A/g1W*Delta*(Y-Q[,"QAW"]) + Q[,"Q1W"]) -
 						1/(mu0*(1-mu0)) * (I.Z*(1-A)/g0W*Delta * (Y-Q[,"QAW"]) + Q[,"Q0W"]))
 				if(n.id < length(id) & ICflag){
 					IC.logOR <- as.vector(by(IC.logOR, id, mean))
@@ -1647,18 +1647,18 @@ calcParameters <- function(Y,A, I.Z, Delta, g1W, g0W, Q, mu1, mu0, id, family, o
 # W - vector, matrix or dataframe containing baseline covariates
 # Z - optional binary intermediate between A and Y - if specified
 # 	  we'll compute "controlled direct effect" to get parameter estimate at
-#    each value of Z 
+#    each value of Z
 # Delta - indicator of missingness.  1 - observed, 0 - missing
 # Q - E(Y|Z,A,W), optional nx2 matrix [E(Y|A=0,W), E(Y|A=1,W)] (if CDE estimation, Z=0)
 # Q.Z1 - optional nx2 matrix [E(Y|A=0,W), E(Y|A=1,W)] (if CDE estimation, when Z=1)
 # g1W - optional values for P(A=1|W)
-# gform - optional glm regression formula 
+# gform - optional glm regression formula
 # gbound - one value for symmetrical bounds on g1W, or a vector containing upper and lower bounds
 # pZ1 - optional values for P(Z=1|A,W)
 # g.Zform - optional glm regression formula
 # pDelta1 - optional values for P(Delta=1|Z,A,W)
-# g.Deltaform - optional glm regression formula  
-# Q.SL.library- optional Super Learner library for estimation of Q, 
+# g.Deltaform - optional glm regression formula
+# Q.SL.library- optional Super Learner library for estimation of Q,
 # cvQinit - if TRUE obtain cross-validated initial Q
 # g.SL.library - optional library for estimation of g1W
 # g.Delta.SL.library - optional library for estimation of p(Delta = 1 | A, L, W)
@@ -1677,19 +1677,19 @@ calcParameters <- function(Y,A, I.Z, Delta, g1W, g0W, Q, mu1, mu0, id, family, o
 # automate - data-adaptive choose of certain tuning parameters
 # obsWeights - optional sampling weights (will be normalized internally)
 # alpha.sig - significance level, e.g., 0.05 for 95% CIs
-# B = 1 for IC-based inference only, # bootstrap samples to also obtain bootstrap variance estimate and 
+# B = 1 for IC-based inference only, # bootstrap samples to also obtain bootstrap variance estimate and
 #	quantile-based CIs.
 #-------------------------------------------------------------------------------
-tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),  
-				Q=NULL, Q.Z1=NULL, Qform=NULL, Qbounds=NULL, 
+tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
+				Q=NULL, Q.Z1=NULL, Qform=NULL, Qbounds=NULL,
 				Q.SL.library=c("SL.glm", "tmle.SL.dbarts2", "SL.glmnet"), cvQinit= TRUE,
-				g1W=NULL, gform=NULL, gbound= NULL, 
+				g1W=NULL, gform=NULL, gbound= NULL,
 				pZ1=NULL, g.Zform=NULL,
-				pDelta1=NULL, g.Deltaform=NULL, 
+				pDelta1=NULL, g.Deltaform=NULL,
 				g.SL.library=c("SL.glm", "tmle.SL.dbarts.k.5", "SL.gam"),
 				g.Delta.SL.library = c("SL.glm", "tmle.SL.dbarts.k.5", "SL.gam"),
-				family="gaussian", fluctuation="logistic", 
-				alpha  = 0.9995, id=1:length(Y), V.Q = 10, V.g = 10, V.Delta = 10, V.Z=10, verbose=FALSE, Q.discreteSL=FALSE, 
+				family="gaussian", fluctuation="logistic",
+				alpha  = 0.9995, id=1:length(Y), V.Q = 10, V.g = 10, V.Delta = 10, V.Z=10, verbose=FALSE, Q.discreteSL=FALSE,
 				g.discreteSL = FALSE, g.Delta.discreteSL=FALSE, prescreenW.g = TRUE, min.retain = 5, target.gwt =TRUE,
 				automate = FALSE, obsWeights = NULL, alpha.sig = 0.05, B = 1) {
 	# Initializations
@@ -1697,19 +1697,19 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
 	colnames(W) <- .setColnames(colnames(W), NCOL(W), "W")
 # change factors to dummies
 	tempY <- Y
-	tempY[is.na(tempY)] <-0 
+	tempY[is.na(tempY)] <-0
 	#factorCols <-sapply(W, is.factor)
 	W <- model.matrix(tempY ~ -1 +., data = data.frame(tempY, W))
 	#W <- model.matrix(~ -1 +., data = as.data.frame(W), contrasts.arg = lapply(W[,factorCols], stats::contrasts, contrasts=FALSE))
 	if (is.vector(W)) {
 		W <- as.matrix(W)
 	}
-	
+
 	if (identical(family, binomial)) {
         family == "binomial"
     }else if (identical(family, gaussian)) {
         family == "gaussian"
-    }else if (identical(family, poisson)) {  
+    }else if (identical(family, poisson)) {
         family == "poisson"
         if(is.null(Qform)){ 		# only glm for Q when family=poisson
         	Qform <- paste("Y~A", paste(colnames(W), collapse="+"), sep="+")
@@ -1719,18 +1719,18 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
 	if(is.null(A) | all(A==0)){
 		A <- rep(1, n)
 	}
-	if(is.null(obsWeights)){ 
+	if(is.null(obsWeights)){
 		obsWeights <- rep(1, n)
 	} else {
 		obsWeights <- obsWeights / sum(obsWeights) * n # normalize the weights
 	}
-	
-	
+
+
 	if (is.null(gbound)){
 		gbound <- 5/sqrt(sum(Delta))/log(sum(Delta))
 	}
 
-	
+
 	if(is.null(prescreenW.g)) {
 		prescreenW.g <- FALSE
 	}
@@ -1752,13 +1752,13 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
 		V.Delta <- .setV(min(c(table(Delta)*5, n)))
 		prescreenW.g <- ncol(W) >= n.effective/5
 	}
-		
+
 	if(!.verifyArgs(Y,Z,A,W,Delta, Qform, gform, g.Zform, g.Deltaform, obsWeights)){
 		stop()
 	}
-   
+
  	maptoYstar <- fluctuation=="logistic"
- 		    	
+
    	if(!is.null(Z) & !is.null(pZ1)){
    		if(NCOL(pZ1)==2){
    			colnames(pZ1) <- c("A0", "A1")
@@ -1766,13 +1766,13 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
    			stop("pZ1 must be an nx2 matrix: [P(Z=1|A=0,W),P(Z=1|A=1,W)]\n")
    		}
    	}
-   	
+
   	if(any(Delta!=1) & !is.null(pDelta1)){
    		if(NCOL(pDelta1)==2 & is.null(Z)){
    			pDelta1 <- cbind(pDelta1, pDelta1)
    			colnames(pDelta1) <- c("Z0A0", "Z0A1", "Z1A0", "Z1A1")  # won't use the second set
    		} else if(NCOL(pDelta1)==4){
-   			colnames(pDelta1) <- c("Z0A0", "Z0A1", "Z1A0", "Z1A1") 
+   			colnames(pDelta1) <- c("Z0A0", "Z0A1", "Z1A0", "Z1A1")
    		}else {
    			if(is.null(Z)){
    				stop("pDelta1 must be an nx2 matrix: [P(Delta=1|A=0,W), P(Delta=1|A=1,W)]\n")
@@ -1781,18 +1781,18 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
    			}
    		}
    	}
-   	   	
-   if(is.null(Z)){ 
-   		Z <- rep(1, length(Y))	
+
+   if(is.null(Z)){
+   		Z <- rep(1, length(Y))
    	}
    	CDE <- length(unique(Z))>1
-   	   		
-	# Stage 1	
- 	stage1 <- .initStage1(Y, A, Q, Q.Z1, Delta, Qbounds, alpha, maptoYstar, family)		
-	Q <- suppressWarnings(estimateQ(Y=stage1$Ystar,Z,A,W, Delta, Q=stage1$Q, Qbounds=stage1$Qbounds, Qform, 
-					maptoYstar=maptoYstar, SL.library=Q.SL.library, 
+
+	# Stage 1
+ 	stage1 <- .initStage1(Y, A, Q, Q.Z1, Delta, Qbounds, alpha, maptoYstar, family)
+	Q <- suppressWarnings(estimateQ(Y=stage1$Ystar,Z,A,W, Delta, Q=stage1$Q, Qbounds=stage1$Qbounds, Qform,
+					maptoYstar=maptoYstar, SL.library=Q.SL.library,
 					cvQinit=cvQinit, family=family, id=id, V = V.Q, verbose=verbose, discreteSL=Q.discreteSL, obsWeights = obsWeights))
-					
+
 	# Stage 2
 	if(length(gbound)==1){
 		if(length(unique(A))==1 & length(unique(Z))==1){  # EY1 only, no controlled direct effect
@@ -1810,31 +1810,31 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
 	prescreenW.g <- prescreenW.g & is.null(gform)  # don't prescreen if variables are already in a specified regression model
 	if((NCOL(W) < min.retain) | !prescreenW.g ) {
 		retain.W <- 1:NCOL(W)
-	} else {	 
+	} else {
 		if ((identical(family, gaussian) | identical(family, "gaussian")) & Q$family == "binomial") {
 				Q.offset <-  plogis(Q$Q[,"QAW"])
 		} else {
 				Q.offset <- Q$Q[,"QAW"]
-		}	
-		retain.W <- .prescreenW.g(stage1$Ystar, A, as.matrix(W), Delta , QAW = Q.offset,  family = family, min.retain, 
+		}
+		retain.W <- .prescreenW.g(stage1$Ystar, A, as.matrix(W), Delta , QAW = Q.offset,  family = family, min.retain,
 							 obsWeights = obsWeights)
-	}	
- 	g <- suppressWarnings(estimateG(d=data.frame(A,W[,retain.W]), g1W, gform, g.SL.library, id=id, V = V.g, verbose, "treatment mechanism", outcome="A",  discreteSL = g.discreteSL, obsWeights = obsWeights)) 
+	}
+ 	g <- suppressWarnings(estimateG(d=data.frame(A,W[,retain.W]), g1W, gform, g.SL.library, id=id, V = V.g, verbose, "treatment mechanism", outcome="A",  discreteSL = g.discreteSL, obsWeights = obsWeights))
  	g$bound.ATT <- gbound.ATT
  	g$bound <- gbound
  	if(g$type=="try-error"){
- 		stop("Error estimating treatment mechanism (hint: only numeric variables are allowed)") 
+ 		stop("Error estimating treatment mechanism (hint: only numeric variables are allowed)")
  	}
- 	
+
 	# if(length(unique(A)) == 2 & requireNamespace("ROCR", quietly=TRUE)){
 		# g$AUC = as.numeric(ROCR::performance(ROCR::prediction(g$g1W,A), measure = "auc")@y.values)
 	# }
 	 if(length(unique(A)) == 2 & requireNamespace("WeightedROC", quietly=TRUE)){
 	 	retain <- obsWeights > 0
-		 g$AUC = WeightedROC::WeightedAUC(WeightedROC::WeightedROC(guess = g$g1W[retain], label = A[retain], 
+		 g$AUC = WeightedROC::WeightedAUC(WeightedROC::WeightedROC(guess = g$g1W[retain], label = A[retain],
 		 		weight = obsWeights[retain]))
 	 }
-	
+
   	if(!CDE){
   		#browser()
   		g.z <- NULL
@@ -1843,20 +1843,20 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
   		# if prescreenW.g, keep all the variables in the g.Deltaform, or keep a minimum of 2 variables. Always keep A.
   		if (!is.null(g.Deltaform)){
   			retain.W.Delta <- 1:NCOL(W)
-  		}		
-  		g.Delta <- suppressWarnings(estimateG(d=data.frame(Delta, Z=1, A, W[,retain.W]), pDelta1, g.Deltaform, 
- 	 		SL.library = g.Delta.SL.library, id=id, V = V.Delta, verbose = verbose, "missingness mechanism", outcome="D",  
- 	 		discreteSL= g.Delta.discreteSL, obsWeights = obsWeights)) 
+  		}
+  		g.Delta <- suppressWarnings(estimateG(d=data.frame(Delta, Z=1, A, W[,retain.W]), pDelta1, g.Deltaform,
+ 	 		SL.library = g.Delta.SL.library, id=id, V = V.Delta, verbose = verbose, "missingness mechanism", outcome="D",
+ 	 		discreteSL= g.Delta.discreteSL, obsWeights = obsWeights))
  		g1W.total <- .bound(g$g1W*g.Delta$g1W[,"Z0A1"], g$bound)
-  		g0W.total <- .bound((1-g$g1W)*g.Delta$g1W[,"Z0A0"], g$bound) 
+  		g0W.total <- .bound((1-g$g1W)*g.Delta$g1W[,"Z0A0"], g$bound)
   		if(all(g1W.total==0)){g1W.total <- rep(10^-9, length(g1W.total))}
   		if(all(g0W.total==0)){g0W.total <- rep(10^-9, length(g0W.total))}
-  		
+
   		ATT <- ATC <- IC.ATT <- IC.ATE <- NULL
   		ATT.rows <- ATC.rows <- 1:n
   		if(length(unique(A)) > 1){
         	depsilon <-  0.001
-        	Q.ATT <- plogis(Q$Q)  
+        	Q.ATT <- plogis(Q$Q)
         }
 
 		# Now trim / res-estimate G for ATT and ATC
@@ -1864,7 +1864,7 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
   	   			# trim controls outside level of support & refit
    	   			minPS.treated <- min((g$g1W)[A == 1])
    	   			ATT.rows <-  (1:n)[g$g1W >= minPS.treated]
-   	   			
+
    	   			# now re-estimateG among the treated only
    	   			# if 10% or fewer were dropped just re-evaluate the intercept, otherwise re-fit g
    	   			# get predictions out on all observations so that row numbers will be consistent
@@ -1874,16 +1874,16 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
    	   				m.ATT <- glm(A[ATT.rows] ~ 1 + offset(qlogis(g$g1W[ATT.rows])), family = "binomial")
   					g.ATT <- plogis(coef(m.ATT) + qlogis(g$g1W))
    	   			} else {
-					g.ATT <- suppressWarnings(estimateG(d=data.frame(A,g$g1W, W[,retain.W])[ATT.rows,], g1W = NULL, gform, 
-					g.SL.library, id=id[ATT.rows], V = V.g, verbose, "treatment mechanism - ATT", outcome="A", 
+					g.ATT <- suppressWarnings(estimateG(d=data.frame(A,g$g1W, W[,retain.W])[ATT.rows,], g1W = NULL, gform,
+					g.SL.library, id=id[ATT.rows], V = V.g, verbose, "treatment mechanism - ATT", outcome="A",
 					newdata = data.frame(A,g$g1W, W[,retain.W]),
-					discreteSL = g.discreteSL, obsWeights = obsWeights[ATT.rows]))$g1W 
+					discreteSL = g.discreteSL, obsWeights = obsWeights[ATT.rows]))$g1W
 				}
-				
+
 			# for ATC trim treated outside level of support
 	        	maxPS.ctl <- max((g$g1W)[A == 0 ])
    	   			ATC.rows <-  (1:n)[g$g1W <= maxPS.ctl]
-   	   			
+
    	   			# now re-estimateG among the treated only
    	   			# if 10% or fewer were dropped just re-evaluate the intercept, otherwise re-fit g
    	   			if (sum(A[ATC.rows]) >= 0.9*sum(A)){
@@ -1891,14 +1891,14 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
    	   				m.ATC <- glm(A[ATC.rows] ~ 1 + offset(qlogis(g$g1W[ATC.rows])), family = "binomial")
   					g.ATC <- plogis(coef(m.ATC) + qlogis(g$g1W))
    	   			} else {
-					g.ATC <- suppressWarnings(estimateG(d=data.frame(A,g$g1W, W[,retain.W])[ATC.rows,], g1W = NULL, gform, 
-						g.SL.library, id=id[ATC.rows], V = V.g, verbose, "treatment mechanism - ATC", outcome="A",  
+					g.ATC <- suppressWarnings(estimateG(d=data.frame(A,g$g1W, W[,retain.W])[ATC.rows,], g1W = NULL, gform,
+						g.SL.library, id=id[ATC.rows], V = V.g, verbose, "treatment mechanism - ATC", outcome="A",
 						newdata = data.frame(A,g$g1W, W[,retain.W]),
 						discreteSL = g.discreteSL, obsWeights = obsWeights[ATC.rows]))$g1W
   				}
   			}
 
-		
+
 
   		###
   		### do this as part of targeted bootstrap.  Do it once to get the estimate and the IC-based inference
@@ -1924,22 +1924,22 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
 		  		b.rows <- NULL
 		  		for (i in b.id){
 		 	 		b.rows <- c(b.rows, which(id == i))
-				} 
+				}
 				obsWeights.cur <- obsWeights[b.rows] / n * length(b.rows)
 				if(length(unique(A)) > 1){
 					b.id.ATT <- sample(uid.ATT, size = n.id.ATT, replace = TRUE)
 					b.ATT.rows <- NULL
 					for (i in b.id.ATT){
 			 	 		b.ATT.rows <- c(b.ATT.rows, which(id == i))
-					} 
+					}
 					obsWeights.curATT <- obsWeights[b.ATT.rows] / length(ATT.rows) * length(b.ATT.rows)
-					
-					
+
+
 					b.id.ATC <- sample(uid.ATC, size = n.id.ATC, replace = TRUE)
 					b.ATC.rows <- NULL
 					for (i in b.id.ATC){
 			 	 		b.ATC.rows <- c(b.ATC.rows, which(id == i))
-					} 
+					}
 					obsWeights.curATC <- obsWeights[b.ATC.rows] / length(ATC.rows) * length(b.ATC.rows)
 				}
 			} else {
@@ -1950,9 +1950,9 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
 				b.ATC.rows <-ATC.rows
 				obsWeights.curATC <- obsWeights[ATC.rows] / n * length(ATC.rows)
 			}
-  			keep <- Delta[b.rows] == 1 
+  			keep <- Delta[b.rows] == 1
 	  		if(target.gwt){
-	  			#wt <- ((A/g1W.total + (1-A)/g0W.total )[b.rows]) * obsWeights.cur 
+	  			#wt <- ((A/g1W.total + (1-A)/g0W.total )[b.rows]) * obsWeights.cur
 
 	  			wt <- ((A/g1W.total + (1-A)/g0W.total )[b.rows]) * obsWeights.cur / length(b.rows) * sum(keep)
 	  			H1W <- A[b.rows]
@@ -1964,7 +1964,7 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
 	  		}
 	  		Ystar <- stage1$Ystar[b.rows]
 	  		suppressWarnings(
-	  			epsilon <- coef(glm(Ystar ~-1 + offset(Q$Q[b.rows,"QAW"]) + H0W + H1W, 
+	  			epsilon <- coef(glm(Ystar ~-1 + offset(Q$Q[b.rows,"QAW"]) + H0W + H1W,
 	  							family=Q$family, weights = wt, subset=keep))
 	  		)
 	  		epsilon[is.na(epsilon)] <- 0  # needed for EY1 calculation
@@ -1975,20 +1975,20 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
 	 		}
 			colnames(Qstar) <- c("QAW", "Q0W", "Q1W")
 	   		if (maptoYstar) {
-				Qstar <- plogis(Qstar)*diff(stage1$ab)+stage1$ab[1] 
+				Qstar <- plogis(Qstar)*diff(stage1$ab)+stage1$ab[1]
 				Ystar <- Ystar*diff(stage1$ab)+stage1$ab[1]
 				if (b == B) {
 					Q$Q <- plogis(Q$Q)*diff(stage1$ab)+stage1$ab[1]
 				}
-			} else if (family == "poisson"){  	
+			} else if (family == "poisson"){
 	    			if (b == B) {
 	    				Q$Q <- exp(Q$Q)
 	    				Qstar <- exp(Qstar)
 	    			}
-	    	}			  
-	    	
-	    	colnames(Q$Q) <- c("QAW", "Q0W", "Q1W")		
-    		res <- calcParameters(Ystar, A[b.rows], I.Z=rep(1, length(b.rows)), Delta[b.rows], g1W.total[b.rows], g0W.total[b.rows], Qstar, 
+	    	}
+
+	    	colnames(Q$Q) <- c("QAW", "Q0W", "Q1W")
+    		res <- calcParameters(Ystar, A[b.rows], I.Z=rep(1, length(b.rows)), Delta[b.rows], g1W.total[b.rows], g0W.total[b.rows], Qstar,
    	   		  		mu1=mean(obsWeights.cur * Qstar[,"Q1W"]), mu0=mean(obsWeights.cur * Qstar[,"Q0W"]), id[b.rows], family,
    	   		  		obsWeights.cur, alpha.sig = alpha.sig, ICflag = b==B)
    	   		est.bs[b,"EY0"] <- ifelse(is.null(res$EY0$psi), NA, res$EY0$psi)
@@ -1996,7 +1996,7 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
    	   		est.bs[b,"ATE"] <- ifelse(is.null(res$ATE$psi), NA, res$ATE$psi)
    	   		est.bs[b,"logRR"] <- ifelse(is.null(res$RR$log.psi), NA, res$RR$log.psi)
    	   		est.bs[b,"logOR"] <- ifelse(is.null(res$OR$log.psi), NA, res$OR$log.psi)
-   	   		
+
 			if (length(unique(A)) > 1) {
    	   		   	   			# adjust intercept for pDelta1
    	   			pDelta1.ATT <- g.Delta$g1W[b.ATT.rows,c("Z0A0", "Z0A1")]
@@ -2007,12 +2007,12 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
 					pDelta1.ATT[,1] <- predict(glm(Delta[b.ATT.rows] ~ 1 + offset(qlogis(pDelta1.ATT[,1])), family = "binomial"), type = "response")
 					pDelta1.ATT[,2] <- predict(glm(Delta[b.ATT.rows] ~ 1 + offset(qlogis(pDelta1.ATT[,2])), family = "binomial"), type = "response")
 				}
-   	   			res.ATT <- try(oneStepATT(Y = stage1$Ystar[b.ATT.rows], A = A[b.ATT.rows], Delta[b.ATT.rows], 
-   	   								Q = Q.ATT[b.ATT.rows,], g1W = g.ATT[b.ATT.rows], 
+   	   			res.ATT <- try(oneStepATT(Y = stage1$Ystar[b.ATT.rows], A = A[b.ATT.rows], Delta[b.ATT.rows],
+   	   								Q = Q.ATT[b.ATT.rows,], g1W = g.ATT[b.ATT.rows],
 	        						pDelta1 = pDelta1.ATT,
-	        						depsilon = depsilon, max_iter = max(1000, 2/depsilon), gbounds = gbound.ATT, 
+	        						depsilon = depsilon, max_iter = max(1000, 2/depsilon), gbounds = gbound.ATT,
 	        						Qbounds = stage1$Qbound, obsWeights = obsWeights.curATT))
-	        		
+
 	        	pDelta1.ATC <- g.Delta$g1W[b.ATC.rows,c("Z0A0", "Z0A1")]
    	   			if(mean(Delta[ATC.rows]) > 0.95){
    	   				pDelta1.ATC[,1] <- mean(Delta[A[b.ATC.rows] ==0])
@@ -2021,24 +2021,24 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
 					pDelta1.ATC[,1] <- predict(glm(Delta[b.ATC.rows] ~ 1 + offset(qlogis(pDelta1.ATC[,1])), family = "binomial"), type = "response")
 					pDelta1.ATC[,2] <- predict(glm(Delta[b.ATC.rows] ~ 1 + offset(qlogis(pDelta1.ATC[,2])), family = "binomial"), type = "response")
 				}
-   	   			res.ATC <- try(oneStepATT(Y = stage1$Ystar[b.ATC.rows], A = 1-A[b.ATC.rows], Delta[b.ATC.rows], 
-   	   								Q = cbind(QAW = Q.ATT[b.ATC.rows,1], Q0W = Q.ATT[b.ATC.rows,"Q1W"], Q1W = Q.ATT[b.ATC.rows,"Q0W"]), 
-   	   								g1W = 1-g.ATC[b.ATC.rows], 
+   	   			res.ATC <- try(oneStepATT(Y = stage1$Ystar[b.ATC.rows], A = 1-A[b.ATC.rows], Delta[b.ATC.rows],
+   	   								Q = cbind(QAW = Q.ATT[b.ATC.rows,1], Q0W = Q.ATT[b.ATC.rows,"Q1W"], Q1W = Q.ATT[b.ATC.rows,"Q0W"]),
+   	   								g1W = 1-g.ATC[b.ATC.rows],
 	        						pDelta1 = pDelta1.ATC,
-	        						depsilon = depsilon, max_iter = max(1000, 2/depsilon), gbounds = gbound.ATT, 
-	        						Qbounds = stage1$Qbound, obsWeights = obsWeights.curATC))	        				  	
+	        						depsilon = depsilon, max_iter = max(1000, 2/depsilon), gbounds = gbound.ATT,
+	        						Qbounds = stage1$Qbound, obsWeights = obsWeights.curATC))
 	        	if(!(inherits(res.ATT, "try-error"))){
-	        		est.bs[b,"ATT"] <- res.ATT$psi * diff(stage1$ab) 
+	        		est.bs[b,"ATT"] <- res.ATT$psi * diff(stage1$ab)
 	        	}
 	       		if(!(inherits(res.ATC, "try-error"))){
-	        		est.bs[b,"ATC"] <- -res.ATC$psi * diff(stage1$ab) 
-	        	}	
+	        		est.bs[b,"ATC"] <- -res.ATC$psi * diff(stage1$ab)
+	        	}
    	   	  }
    	   	} # end bootstrap
-   	   	  	   	
-   	    if (length(unique(A)) > 1){  	      	
+
+   	    if (length(unique(A)) > 1){
         	if(!(inherits(res.ATT, "try-error"))){
-        	 	ATT$psi <- res.ATT$psi * diff(stage1$ab) 
+        	 	ATT$psi <- res.ATT$psi * diff(stage1$ab)
         	 	ATT$converged <- res.ATT$conv
         	 	if(n.id < length(id)){
         			IC.ATT <- as.vector(by(res.ATT$IC, id, mean)) * diff(stage1$ab) + stage1$ab[1]
@@ -2047,11 +2047,12 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
 				}
 				ATT$var.psi <- var(IC.ATT)/n.id
 				ATT$CI <- c(ATT$psi -mult *sqrt(ATT$var.psi), ATT$psi +mult *sqrt(ATT$var.psi))
-				ATT$pvalue <- 2*pnorm(-abs(ATT$psi/sqrt(ATT$var.psi)))	
+				ATT$pvalue <- 2*pnorm(-abs(ATT$psi/sqrt(ATT$var.psi)))
 			}
-	        				  
+   	      # adding default IC.ATC here in case res.ATC does not inherit try-error
+   	      IC.ATC <- NULL
         	if(!(inherits(res.ATC, "try-error"))){
-        		ATC$psi <- -res.ATC$psi * diff(stage1$ab) 
+        		ATC$psi <- -res.ATC$psi * diff(stage1$ab)
         		ATC$converged <- res.ATC$conv
         		if(n.id < length(id)){
         			IC.ATC <- as.vector(by(res.ATC$IC, id, mean)) * diff(stage1$ab) + stage1$ab[1]
@@ -2060,15 +2061,15 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
 				}
 				ATC$var.psi <- var(IC.ATC)/n.id
 				ATC$CI <- c(ATC$psi -mult *sqrt(ATC$var.psi), ATC$psi +mult *sqrt(ATC$var.psi))
-				ATC$pvalue <- 2*pnorm(-abs(ATC$psi/sqrt(ATC$var.psi)))	
+				ATC$pvalue <- 2*pnorm(-abs(ATC$psi/sqrt(ATC$var.psi)))
 			}
 			res$ATT <- ATT
 		 	res$ATC <- ATC
 		 	res$IC$IC.ATT <- IC.ATT
 		 	res$IC$IC.ATC <- IC.ATC
 		 }
-		
-			
+
+
 		  # bs inference
 		  if (B == 1){
 			bs.var <- rep(NA, ncol(est.bs))
@@ -2079,42 +2080,42 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
 			  CI.twosided <- apply(est.bs, 2,  quantile, p = quant.2,na.rm=TRUE)
 			  CI.onesided <- apply(est.bs, 2,  quantile, p = c(alpha.sig, 1-alpha.sig), na.rm=TRUE)
 	   	   }
-	   	  
-		  	if (!is.null(res$EY0)){  
-				res$EY0$bs.var <- bs.var[1] 	
+
+		  	if (!is.null(res$EY0)){
+				res$EY0$bs.var <- bs.var[1]
 		   	   	res$EY0$bs.CI.twosided = CI.twosided[,1]
 		   	   	res$EY0$bs.CI.onesided.lower = c(-Inf, CI.onesided[2,1])
 		   	   	res$EY0$bs.CI.onesided.upper = c(CI.onesided[1,1], Inf)
 		   	}
-	   	   	
-		   	res$EY1$bs.var <- bs.var[2] 	
+
+		   	res$EY1$bs.var <- bs.var[2]
 	   	   	res$EY1$bs.CI.twosided = CI.twosided[,2]
 	   	   	res$EY1$bs.CI.onesided.lower = c(-Inf, CI.onesided[2,2])
 	   	   	res$EY1$bs.CI.onesided.upper = c(CI.onesided[1,2], Inf)
-	   	   	
-	   	    if (!is.null(res$ATE)){  
-		   	   	res$ATE$bs.var <- bs.var[3] 	
+
+	   	    if (!is.null(res$ATE)){
+		   	   	res$ATE$bs.var <- bs.var[3]
 		   	   	res$ATE$bs.CI.twosided = CI.twosided[,3]
 		   	   	res$ATE$bs.CI.onesided.lower = c(-Inf, CI.onesided[2,3])
 		   	   	res$ATE$bs.CI.onesided.upper = c(CI.onesided[1,3], Inf)
-		   	   	
+
 		   	   	if (family == "binomial"){
-			   	   	res$RR$bs.var.log.psi <- bs.var[4] 	
+			   	   	res$RR$bs.var.log.psi <- bs.var[4]
 			   	   	res$RR$bs.CI.twosided = exp(CI.twosided[,4])
 			   	    res$RR$bs.CI.onesided.lower = c(-Inf, exp(CI.onesided[2,4]))
 		   	   		res$RR$bs.CI.onesided.upper = c(exp(CI.onesided[1,4]), Inf)
-			   	   	
-			   	   	res$OR$bs.var.log.psi <- bs.var[5] 	
+
+			   	   	res$OR$bs.var.log.psi <- bs.var[5]
 			   	   	res$OR$bs.CI.twosided = exp(CI.twosided[,5])
 			   	   	res$OR$bs.CI.onesided.lower = c(-Inf, exp(CI.onesided[2,5]))
 		   	   		res$OR$bs.CI.onesided.upper = c(exp(CI.onesided[1,5]), Inf)
 			   	}
-			   	res$ATT$bs.var <- bs.var[6] 	
+			   	res$ATT$bs.var <- bs.var[6]
 		   	   	res$ATT$bs.CI.twosided = CI.twosided[,6]
 		   	   	res$ATT$bs.CI.onesided.lower = c(-Inf, CI.onesided[2,6])
 		   	   	res$ATT$bs.CI.onesided.upper = c(CI.onesided[1,6], Inf)
-		   	   	
-		   	    res$ATC$bs.var <- bs.var[7] 	
+
+		   	    res$ATC$bs.var <- bs.var[7]
 		   	   	res$ATC$bs.CI.twosided = CI.twosided[,7]
 		   	   	res$ATC$bs.CI.onesided.lower = c(-Inf, CI.onesided[2,7])
 		   	   	res$ATC$bs.CI.onesided.upper = c(CI.onesided[1,7], Inf)
@@ -2124,10 +2125,10 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
 	    m.rsq <- glm(Y~ 1, family = family)
 	    Yhat <- predict(m.rsq, newdata = data.frame(A),  type = "response")
 	    Q$Rsq  <-  NULL
-	     
+
 		if(family == "binomial"){
 			Q$Rsq <- 1 - sum(Delta * obsWeights* ( Y * log(Q$Q[,"QAW"]) + (1-Y)*log(1-Q$Q[,"QAW"]))) /
-			 	                             sum(Delta * obsWeights* ( Y * log(Yhat) + (1-Y)*log(1-Yhat)))		
+			 	                             sum(Delta * obsWeights* ( Y * log(Yhat) + (1-Y)*log(1-Yhat)))
 			 Q$Rsq.type <- "pseudo R squared"
 		} else {
 			Q$Rsq <- 1 - sum(obsWeights[Delta == 1] *(Y[Delta == 1]-Q$Q[Delta == 1,"QAW"])^2)/ sum(obsWeights[Delta == 1] * (Y[Delta == 1]-mean(obsWeights[Delta == 1] *Y[Delta==1]))^2)
@@ -2139,29 +2140,29 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
 			Q$Rsq.type <- paste("Empirical", Q$Rsq.type)
 		}
 		Q$Q <- Q$Q[,-1]
-  		returnVal <- list(estimates=res, Qinit=Q, g=g, g.Z=g.z, g.Delta=g.Delta, Qstar=Qstar[,-1], 
-  				epsilon=epsilon, gbound = gbound, gbound.ATT = gbound.ATT, W.retained = colnames(W)[retain.W]) 
+  		returnVal <- list(estimates=res, Qinit=Q, g=g, g.Z=g.z, g.Delta=g.Delta, Qstar=Qstar[,-1],
+  				epsilon=epsilon, gbound = gbound, gbound.ATT = gbound.ATT, W.retained = colnames(W)[retain.W])
   		class(returnVal) <- "tmle"
   	} else {
   		V.Z <- .setV(min(c(table(Z)*5, n)))
   		returnVal <- vector(mode="list", length=2)
-  		g.z <- suppressWarnings(estimateG(d=data.frame(Z,A,W[,retain.W]), pZ1, g.Zform, g.SL.library, id=id, V = V.Z, 
+  		g.z <- suppressWarnings(estimateG(d=data.frame(Z,A,W[,retain.W]), pZ1, g.Zform, g.SL.library, id=id, V = V.Z,
   					  verbose, "intermediate variable", outcome="Z",  discreteSL= g.discreteSL, obsWeights = obsWeights))
-  		g.Delta <- suppressWarnings(estimateG(d=data.frame(Delta,Z, A, W[,retain.W]), pDelta1, g.Deltaform, 
-  								 g.Delta.SL.library,id=id, V=V.Delta, verbose, "missingness mechanism", outcome="D",  
-  								 discreteSL= g.Delta.discreteSL, obsWeights = obsWeights)) 
+  		g.Delta <- suppressWarnings(estimateG(d=data.frame(Delta,Z, A, W[,retain.W]), pDelta1, g.Deltaform,
+  								 g.Delta.SL.library,id=id, V=V.Delta, verbose, "missingness mechanism", outcome="D",
+  								 discreteSL= g.Delta.discreteSL, obsWeights = obsWeights))
     	ZAD <- cbind(D1Z0A0 = .bound((1-g$g1W)*(1-g.z$g1W[,"A0"])*g.Delta$g1W[,"Z0A0"], gbound),
   					  D1Z0A1 = .bound(g$g1W*(1-g.z$g1W[,"A1"])*g.Delta$g1W[,"Z0A1"], gbound),
   					  D1Z1A0 = .bound((1-g$g1W)*g.z$g1W[,"A0"]*g.Delta$g1W[,"Z1A0"], gbound),
   					  D1Z1A1 = .bound(g$g1W*g.z$g1W[,"A1"]*g.Delta$g1W[,"Z1A1"], gbound))
   	adjustZero <- colSums(ZAD)==0
   	ZAD[,adjustZero] <- 10^-9
-  	  ######## Update this part if the above works 
+  	  ######## Update this part if the above works
   	uid.z0 <- unique(id[Z==0])
 	n.id.z0 <- length(uid.z0)
 	uid.z1 <- unique(id[Z==1])
 	n.id.z1 <- length(uid.z1)
-	mult <- abs(qnorm(alpha.sig/2))	
+	mult <- abs(qnorm(alpha.sig/2))
  	for (z in 0:1){
   		est.bs <- matrix(NA, nrow = B, ncol = 5)
   		colnames(est.bs) <- c("EY0", "EY1", "ATE", "logRR", "logOR")
@@ -2174,7 +2175,7 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
 		  		b.rows <- NULL
 		  		for (i in b.id){
 		 	 		b.rows <- c(b.rows, which(id == i))
-				} 
+				}
 				obsWeights.cur <- obsWeights[b.rows] / n * length(b.rows)
 			} else {
 				b.rows <- 1:n
@@ -2198,31 +2199,31 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
   			suppressWarnings(
   				epsilon <- coef(glm(Ystar~-1 + offset(Q$Q[b.rows,"QAW"]) + H0W + H1W, family=Q$family,
   					  weights = wt, subset = keep))
-  			) 
-  			epsilon[is.na(epsilon)] <- 0 	
-  			
-		 	Qstar <- Q$Q[b.rows,c(1, z*2+2, z*2+3)] + c((epsilon[1]*H0W + epsilon[2]*H1W), 
+  			)
+  			epsilon[is.na(epsilon)] <- 0
+
+		 	Qstar <- Q$Q[b.rows,c(1, z*2+2, z*2+3)] + c((epsilon[1]*H0W + epsilon[2]*H1W),
  												        epsilon[1]*hCounter[,1], epsilon[2]*hCounter[,2])
-			colnames(Qstar) <- c("QAW", "Q0W", "Q1W") 
+			colnames(Qstar) <- c("QAW", "Q0W", "Q1W")
 			if (b == B){
 					Qinit.return <- Q$Q[,c(1, z*2+2, z*2+3)]
 			}
    			if (maptoYstar) {
-				Qstar <- plogis(Qstar)*diff(stage1$ab)+stage1$ab[1] 
+				Qstar <- plogis(Qstar)*diff(stage1$ab)+stage1$ab[1]
 				Ystar <- Ystar*diff(stage1$ab)+stage1$ab[1]
 				if (b == B){
 					Qinit.return <- plogis(Q$Q[,c(1, z*2+2, z*2+3)])*diff(stage1$ab)+stage1$ab[1]
 				}
-			} else if (family == "poisson"){ 
+			} else if (family == "poisson"){
     			Qstar <- exp(Qstar)
     			 if (b == B){
-    			 	Qinit.return <- exp(Q$Q[,c(1, z*2+2, z*2+3)]) 
+    			 	Qinit.return <- exp(Q$Q[,c(1, z*2+2, z*2+3)])
     			 }
     		}
-    		
-    		res <- calcParameters(Ystar, A[b.rows],I.Z=as.integer(Z[b.rows]==z), Delta[b.rows], g1W=ZAD[b.rows,z*2+2], 
-    						g0W=ZAD[b.rows,z*2+1],  
-   	   					  Qstar, mu1=mean(obsWeights.cur * Qstar[,"Q1W"]), mu0=mean(obsWeights.cur * Qstar[,"Q0W"]), 
+
+    		res <- calcParameters(Ystar, A[b.rows],I.Z=as.integer(Z[b.rows]==z), Delta[b.rows], g1W=ZAD[b.rows,z*2+2],
+    						g0W=ZAD[b.rows,z*2+1],
+   	   					  Qstar, mu1=mean(obsWeights.cur * Qstar[,"Q1W"]), mu0=mean(obsWeights.cur * Qstar[,"Q0W"]),
    	   					  id[b.rows], family, obsWeights = obsWeights.cur, ICflag = b==B, alpha.sig = alpha.sig)
    	   		est.bs[b,"EY0"] <- ifelse(is.null(res$EY0$psi), NA, res$EY0$psi)
    	   		est.bs[b,"EY1"] <- ifelse(is.null(res$EY1$psi), NA, res$EY1$psi)
@@ -2241,39 +2242,39 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
 				  CI.twosided <- apply(est.bs, 2,  quantile, p = quant.2,na.rm=TRUE)
 				  CI.onesided <- apply(est.bs, 2,  quantile, p = c(alpha.sig, 1-alpha.sig), na.rm=TRUE)
 		   	   }
-			   	res$EY0$bs.var <- bs.var[1] 	
+			   	res$EY0$bs.var <- bs.var[1]
 		   	   	res$EY0$bs.CI.twosided = CI.twosided[,1]
 		   	   	res$EY0$bs.CI.onesided.lower = c(-Inf, CI.onesided[2,1])
 		   	   	res$EY0$bs.CI.onesided.upper = c(CI.onesided[1,1], Inf)
-		   	   	
-		   	   	res$EY1$bs.var <- bs.var[2] 	
+
+		   	   	res$EY1$bs.var <- bs.var[2]
 		   	   	res$EY1$bs.CI.twosided = CI.twosided[,2]
 		   	   	res$EY1$bs.CI.onesided.lower = c(-Inf, CI.onesided[2,2])
 		   	   	res$EY1$bs.CI.onesided.upper = c(CI.onesided[1,2], Inf)
-		   	    
+
 		   	    if(!(is.null(res$ATE))){
-			   	   	res$ATE$bs.var <- bs.var[3] 	
+			   	   	res$ATE$bs.var <- bs.var[3]
 			   	   	res$ATE$bs.CI.twosided = CI.twosided[,3]
 			   	   	res$ATE$bs.CI.onesided.lower = c(-Inf, CI.onesided[2,3])
 			   	   	res$ATE$bs.CI.onesided.upper = c(CI.onesided[1,3], Inf)
-			   	   	
+
 			   	   	if (family == "binomial"){
-				   	   	res$RR$bs.var.log.psi <- bs.var[4] 	
+				   	   	res$RR$bs.var.log.psi <- bs.var[4]
 				   	   	res$RR$bs.CI.twosided = exp(CI.twosided[,3])
 				   	    res$RR$bs.CI.onesided.lower = c(-Inf, exp(CI.onesided[2,3]))
 			   	   		res$RR$bs.CI.onesided.upper = c(exp(CI.onesided[1,3]), Inf)
-				   	   	
-				   	   	res$OR$bs.var.log.psi <- bs.var[5] 	
+
+				   	   	res$OR$bs.var.log.psi <- bs.var[5]
 				   	   	res$OR$bs.CI.twosided = exp(CI.twosided[,5])
 				   	   	res$OR$bs.CI.onesided.lower = c(-Inf, exp(CI.onesided[2,5]))
 			   	   		res$OR$bs.CI.onesided.upper = c(exp(CI.onesided[1,5]), Inf)
 				   	}
 			   }
-   	   		Qreturn <- Q   	   		
+   	   		Qreturn <- Q
    	        Qreturn$Q <- Qinit.return[,-1]
- 		
+
    	   		g$bound.ATT <- NULL
-   	   		returnVal[[z+1]] <- list(estimates=res, Qinit=Qreturn, g=g, g.Z=g.z, g.Delta=g.Delta, 
+   	   		returnVal[[z+1]] <- list(estimates=res, Qinit=Qreturn, g=g, g.Z=g.z, g.Delta=g.Delta,
    	   									 Qstar=Qstar[,-1], epsilon=epsilon, gbound = gbound, gbound.ATT = NULL, W.retained = colnames(W)[retain.W])
   		}
   		class(returnVal[[1]]) <- class(returnVal[[2]]) <- "tmle"
@@ -2284,7 +2285,7 @@ tmle <- function(Y,A,W, Z=NULL, Delta=rep(1,length(Y)),
 
 # Last modified April 24, 2024. Susan Gruber, sgruber@TLrevolution.com
 
-#Copyright 2012. The Regents of the University of California (Regents). All Rights Reserved. Permission to use, copy, modify, and distribute this software and its documentation for #educational, research, and not-for-profit purposes, without fee and without a signed licensing agreement, is hereby granted, provided that the above copyright notice, this paragraph and the 
+#Copyright 2012. The Regents of the University of California (Regents). All Rights Reserved. Permission to use, copy, modify, and distribute this software and its documentation for #educational, research, and not-for-profit purposes, without fee and without a signed licensing agreement, is hereby granted, provided that the above copyright notice, this paragraph and the
 #following two paragraphs appear in all copies, modifications, and distributions. Contact The Office of Technology Licensing, UC Berkeley, 2150 Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for commercial licensing opportunities.
 
 #[Created by Susan Gruber, Sam Lendle and Mark van der Laan, Department of Biostatistics, University of California, Berkeley.]
